@@ -3,18 +3,15 @@
 import Link from "next/link";
 import { StoriesResponse } from "@/interface/storiesResponse";
 import useSWR from "swr";
-import { fetcher } from "@/app/utils/fetcher";
 
-export default function Home() {
-  const { data, error, isLoading } = useSWR<StoriesResponse>(
-    "/api/stories",
-    fetcher,
-  );
+export default function Page() {
+  const { data, error, isLoading } = useSWR<StoriesResponse>("/api/stories");
 
   const storyListData = data?.data || [];
 
   return (
     <main>
+      <div>Here is the strory list</div>
       {storyListData.map((story) => (
         <Link key={story.id} href={`stories/${story.id}`}>
           <div>
