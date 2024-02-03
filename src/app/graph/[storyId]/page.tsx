@@ -3,5 +3,5 @@ export default async function Page({
 }: {
   params: { storyId: string };
 }) {
-  return <main> graph {params.storyId}</main>;
+  return <main> here is graph {params.storyId}</main>;
 }

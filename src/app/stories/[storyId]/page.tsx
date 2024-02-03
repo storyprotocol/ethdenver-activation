@@ -8,7 +8,7 @@ export default async function Page({
   return (
     <main>
       <div>content {params.storyId}</div>
-      <Link href={"/"}>back</Link>
+      <Link href={"/stories"}>back</Link>
     </main>
   );
 }
