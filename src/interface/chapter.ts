@@ -1,4 +1,7 @@
 export interface Chapter {
-  id: string;
-  description: string;
+  id: number;
+  content: string;
+  story_id: number;
+  parent_id: number;
+  sibling_count: number;
 }

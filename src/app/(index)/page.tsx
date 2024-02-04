@@ -7,7 +7,12 @@ export default function Page() {
       Here is the landing page
       <div>
         <Button asChild>
-          <Link href="/stories">To stories</Link>
+          <Link href="/chapters">To stories</Link>
+        </Button>
+      </div>
+      <div>
+        <Button asChild>
+          <Link href="/graph">To Graph</Link>
         </Button>
       </div>
     </div>

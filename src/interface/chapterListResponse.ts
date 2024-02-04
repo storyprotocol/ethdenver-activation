@@ -1,6 +1,5 @@
 import { Chapter } from "@/interface/chapter";
 
-export interface StoryDetailResponse {
-  id: string;
+export interface ChapterListResponse {
   chapters: Chapter[];
 }
