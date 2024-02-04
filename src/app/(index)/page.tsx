@@ -3,7 +3,8 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex min-h-screen flex-col justify-center gap-3 bg-pink-500 p-6 text-white">
+    //  min-h-screen
+    <div className="flex min-h-[calc(100vh-33px)] flex-col justify-center gap-3 p-6 text-white">
       <h1 className="text-3xl font-bold">Exquisite Story</h1>
       <p>A collective storytelling journey.</p>
       <p>
