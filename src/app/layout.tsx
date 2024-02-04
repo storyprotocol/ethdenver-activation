@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SWRProvider } from "@/app/swr-provider";
-import FooterLogo from "@/components/pages/footerLogo";
+import FooterLogo from "@/components/pages/FooterLogo";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,12 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-linear font-sans antialiased",
+          "flex min-h-screen flex-col bg-linear font-sans antialiased",
           fontSans.variable,
         )}
       >
         <SWRProvider>
-          <div className={"min-h-[calc(100vh-33px)]"}>{children}</div>
+          <main className={"h-1 flex-1"}>{children}</main>
           <FooterLogo />
         </SWRProvider>
       </body>
