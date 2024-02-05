@@ -2,14 +2,24 @@ import "./globals.css";
 
 import React from "react";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SWRProvider } from "@/app/swr-provider";
 import FooterLogo from "@/components/pages/FooterLogo";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+import localFont from "next/font/local";
+
+const acronymFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/acronym_regular.woff2",
+      weight: "400",
+    },
+    {
+      path: "../assets/fonts/acronym_semibold.woff2",
+      weight: "600",
+    },
+  ],
+  variable: "--font-acronym",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +37,7 @@ export default function RootLayout({
       <body
         className={cn(
           "flex min-h-screen flex-col bg-linear font-sans antialiased",
-          fontSans.variable,
+          acronymFont.variable,
         )}
       >
         <SWRProvider>
