@@ -1,5 +1,9 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import arrowRightBlackIcon from "@/assets/common/arrow_right_black.svg";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
@@ -16,11 +20,14 @@ export default function Page() {
       </p>
 
       <div className="mt-4 flex gap-4">
-        <Button variant="outline" asChild className="w-1/2 text-black">
+        <Button className={"w-1/2"}>
           <Link href="/graph">View IP Graph</Link>
         </Button>
-        <Button variant="outline" asChild className="w-1/2 text-black">
-          <Link href="/chapters">Continue</Link>
+        <Button className={"w-1/2"} asChild>
+          <Link href="/chapters">
+            <span>Continue</span>
+            <Image src={arrowRightBlackIcon} alt={"back"} className="ml-2" />
+          </Link>
         </Button>
       </div>
     </div>
