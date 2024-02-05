@@ -29,7 +29,7 @@ function verify(value: string | null): number | Response {
     );
   }
 
-  let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount);
+  let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount) || 100;
   if (
     isNaN(Number(defaultMaxMum)) ||
     Number(defaultMaxMum) == 0 ||
