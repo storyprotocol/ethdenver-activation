@@ -16,6 +16,7 @@ export const SWRProvider = ({
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
       }}
     >
       {children}
