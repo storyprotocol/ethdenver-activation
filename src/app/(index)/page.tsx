@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
-    <main className={"flex flex-1 flex-col justify-center p-4"}>
+    <main
+      className={
+        "flex w-full max-w-screen-sm flex-1 flex-col justify-center p-4"
+      }
+    >
       <div>
         <h1 className="text-5xl font-medium">Exquisite Story</h1>
         <div className={"mt-4 text-xl"}>

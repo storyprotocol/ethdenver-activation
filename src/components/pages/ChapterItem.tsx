@@ -25,7 +25,9 @@ export default function ChapterItem({
     >
       <div className={"flex items-center opacity-50"}>
         <Image src={hashIcon} alt={"wallet"} />
-        <span className={"ml-1 text-xs"}>Oxf6Ccfb</span>
+        <span className={"ml-1 text-xs"}>
+          {chapter.wallet_address?.slice(0, 6)}
+        </span>
       </div>
       <div className={cn("flex items-center", cardStyle ? "mt-2.5" : "mt-1")}>
         <div className={"flex-1 text-xl"}>{chapter.content}</div>
