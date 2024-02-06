@@ -41,3 +41,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - **API_CHAPTER_RANDOM_MIN_COUNT** : return the min count chapters info
 - **API_CHAPTER_RANDOM_MAX_COUNT** : setup the max count chapters info
+- **API_CHAPTER_RELATIONSHIP_MAX_LIMIT** : setup the max chapter relationship query limit
