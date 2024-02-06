@@ -9,15 +9,18 @@ import ChapterList from "./ChapterList";
 import NewChapterTextarea from "./NewChapterTextarea";
 import SubmitSheet from "./SubmitSheet";
 import { useState } from "react";
+import { ErrorResponse } from "@/lib/fetcher";
+import NetworkErrorAlert from "@/components/pages/NetworkErrorAlert";
 
 export default function Page({ params }: { params: { chapter_id: string } }) {
   const chapterId = params.chapter_id;
   const [open, setOpen] = useState(false);
   const [preparedContent, setPreparedContent] = useState("");
 
-  const { data, isLoading, isValidating } = useSWR<ChapterListResponse>(
-    `/api/chapters/${chapterId}/up`,
-  );
+  const { data, isLoading, isValidating, error, mutate } = useSWR<
+    ChapterListResponse,
+    ErrorResponse
+  >(`/api/chapters/${chapterId}/up`);
 
   const chapterListData = data?.chapters || [];
   const storyId = chapterListData[0]?.story_id?.toString() || "";
@@ -37,6 +40,12 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
           <Image src={arrowLeftIcon} alt={"back"} />
           <span>Back to Selection</span>
         </Link>
+
+        <NetworkErrorAlert
+          error={error}
+          onRetry={mutate}
+          isValidating={isValidating}
+        />
 
         <ChapterList isLoading={isLoading} chapterListData={chapterListData} />
 
