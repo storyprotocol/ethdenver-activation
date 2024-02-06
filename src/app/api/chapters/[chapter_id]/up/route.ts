@@ -1,3 +1,4 @@
+import { CfgDefaultValue } from "@/app/api/config";
 import {
   CusEntityNotFoundError,
   CusEnvVarsConfigError,
@@ -73,7 +74,7 @@ export async function GET(
 }
 
 function verifyDepth(value: string | null): number {
-  let depth = value || 1;
+  let depth = value || CfgDefaultValue.ChapterUpDepthMinValue;
   if (isNaN(Number(depth))) {
     throw new CusTypeError(
       ErrorCode.ChapterUpDepthTypeError,
@@ -81,7 +82,9 @@ function verifyDepth(value: string | null): number {
     );
   }
 
-  const maxDepth = GetEnv(EnvKey.ChapterUpWithSelfMaxDepth) || 3;
+  const maxDepth =
+    GetEnv(EnvKey.ChapterUpWithSelfMaxDepth) ||
+    CfgDefaultValue.ChapterUpDepthMaxValue;
   if (isNaN(Number(maxDepth))) {
     throw new CusEnvVarsConfigError(
       ErrorCode.ChapterUpDepthMaxError,
@@ -109,6 +112,7 @@ async function process(chapters: ChapterMO[]): Promise<Chapter[]> {
       story_id: chapter.story_id,
       content: chapter.content,
       parent_id: chapter.parent_id,
+      wallet_address: chapter.wallet_address,
       path: chapter.path,
       sibling_count: sliding.length,
     } as Chapter);

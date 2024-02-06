@@ -41,6 +41,12 @@ class CusRangeError extends BasicError {
   }
 }
 
+class CusDBError extends BasicError {
+  constructor(code: string, message: string) {
+    super(code, 500, message);
+  }
+}
+
 function http400Error(code: string, msg?: string): Response {
   return NextResponse.json(
     {
@@ -54,7 +60,7 @@ function http400Error(code: string, msg?: string): Response {
 function http500Error(code: string): Response {
   return NextResponse.json(
     {
-      code: code,
+      code,
       message: "internal error",
     },
     { status: 500 },
@@ -62,9 +68,12 @@ function http500Error(code: string): Response {
 }
 
 const ErrorCode = {
-  SystemError: "ORIGINAL_ERROR",
-  ChapterRandomQueryVarError: "Query_Var_Random",
-  ChapterRandomMaxNotConfigError: "Query_Var_Random_Not_Config",
+  ChapterRelationshipLimitError: "Query_Var_Relationship_limit_Error",
+  DatabaseError: "Database_Error",
+  
+  SystemError: "Original_Error",
+  ChapterRandomQueryVarError: "Query_Var_Random_Error",
+  ChapterRandomMaxNotConfigError: "Query_Var_Random_Not_Config_Error",
 
   ChapterUpDepthTypeError: "Query_Var_Depth_Type_Error",
   ChapterUpDepthMaxError: "Query_Var_Depth_Max_Error",
@@ -72,6 +81,11 @@ const ErrorCode = {
   ChapterIDTypeError: "Query_Var_ID_Type_Error",
   ChapterNotExistError: "Chapter_Not_Exist",
   ChapterIdUniqueError: "Chapter_ID_Unique_Error",
+  ChapterCreateError: "Chapter_Create_Error",
+
+  StoryIDTypeError: "Story_ID_Type_Error",
+  ChapterContentRequiredError: "Chapter_Content_Required_Error",
+  WalletAddressTypeError: "Wallet_Address_Type_Error",
 };
 
 function errorHandler(err: Error): Response {
@@ -91,6 +105,7 @@ function errorHandler(err: Error): Response {
 }
 export {
   BasicError,
+  CusDBError,
   CusEntityNotFoundError,
   CusEntityNotUniqueError,
   CusEnvVarsConfigError,
