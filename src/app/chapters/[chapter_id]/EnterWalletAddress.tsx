@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { isAddress } from "web3-validator";
 import Image from "next/image";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function EnterWalletAddress({
   onSubmit,
@@ -10,6 +11,8 @@ export default function EnterWalletAddress({
   onSubmit: (walletAddress: string) => void;
 }) {
   const [walletAddress, setWalletAddress] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const showValidation = !!walletAddress && !isValid;
 
   return (
     <div className={"flex flex-1 flex-col justify-center"}>
@@ -18,24 +21,31 @@ export default function EnterWalletAddress({
         attribution and receipt of your commemorative NFT.
       </p>
 
-      <div className={"mt-4"}>
+      <div className={"relative mt-4"}>
         <label className={"mb-1 text-xl font-medium"} htmlFor={"walletAddress"}>
           Wallet Address
         </label>
-        <Textarea
+        <input
           id={"walletAddress"}
-          className={
-            "h-40 p-4 pb-12 pt-6 text-xl text-primary-foreground transition-all placeholder:text-primary-foreground/30"
-          }
+          className={cn(
+            "block w-full rounded-md p-4 pb-12 pt-6 text-xl text-primary-foreground",
+            "placeholder:text-primary-foreground/30 focus-visible:outline-none",
+          )}
           placeholder={"ie. 0x..."}
           value={walletAddress}
-          onChange={(e) => setWalletAddress(e.target.value)}
-          maxLength={280}
+          onChange={(e) => {
+            setWalletAddress(e.target.value);
+            setIsValid(isAddress(e.target.value));
+          }}
         />
-        <div className={"relative -top-12 text-right"}>
+        <div className={"absolute bottom-0 right-0 flex items-center"}>
+          {showValidation && (
+            <span className={"text-destructive"}>Enter a valid address</span>
+          )}
           <Button
-            className={"space-x-1"}
+            className={"select-none space-x-1"}
             onClick={() => onSubmit(walletAddress)}
+            disabled={showValidation}
           >
             <span>Submit</span>
             <Image

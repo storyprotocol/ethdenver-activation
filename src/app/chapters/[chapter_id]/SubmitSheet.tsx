@@ -12,11 +12,13 @@ export default function SubmitSheet({
   open,
   onOpenChange,
   chapterId,
+  storyId,
   content,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   chapterId: string;
+  storyId: string;
   content: string;
 }) {
   const router = useRouter();
@@ -35,7 +37,7 @@ export default function SubmitSheet({
     walletAddress?: string,
   ) => {
     const requestBody: CreateChapterRequest = {
-      story_id: Number(chapterId),
+      story_id: Number(storyId),
       is_anonymous: !walletAddress,
       parent_id: Number(parentId),
       wallet_address: walletAddress || undefined,
@@ -60,10 +62,18 @@ export default function SubmitSheet({
     }
   };
 
+  if (open && !storyId) {
+    return <Spinner />;
+  }
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side={"bottom"} className={"h-full p-0"}>
-        <div className={"flex h-full flex-col bg-linear px-4 pt-8"}>
+      <SheetContent side={"bottom"} className={"h-full w-full bg-linear p-0"}>
+        <div
+          className={
+            "absolute left-1/2 flex h-full w-full max-w-screen-sm -translate-x-1/2 flex-col px-4 pt-8"
+          }
+        >
           <div className={"text-5xl font-medium"}>Exquisite Story</div>
 
           <div className={"fixed bottom-0 left-1/2 -translate-x-1/2"}></div>

@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { QueryChaptersLaterThanProps } from "@/interface/chapterRelationShipRequest";
-import { ErrorCode, HTTP400Error, HTTP500Error } from "../../errorUtils";
+import { ErrorCode, http400Error } from "../../errorUtils";
 import { EnvKey, GetEnv } from "../../utils";
 import { queryChaptersAfterID } from "./server";
 
@@ -36,21 +36,21 @@ const validateLimit = (value: string | number | undefined | null): void => {
     Number(GetEnv(EnvKey.ChapterRelationshipMaxLimit)) || 10000;
   const limit = Number(value) || defaultLimit;
   if (isNaN(limit)) {
-    throw HTTP400Error(
+    throw http400Error(
       ErrorCode.ChapterRandomQueryVarError,
       "limit should be a number",
     );
   }
 
   if (limit < 1) {
-    throw HTTP400Error(
+    throw http400Error(
       ErrorCode.ChapterRandomQueryVarError,
       "limit should be greater than 1",
     );
   }
 
   if (limit > defaultLimit) {
-    throw HTTP400Error(
+    throw http400Error(
       ErrorCode.ChapterRandomQueryVarError,
       `limit should be within than ${defaultLimit}`,
     );
@@ -66,14 +66,14 @@ const validateFromChapterId = (
   const id = Number(value);
   const defaultID = 0;
   if (isNaN(id)) {
-    throw HTTP400Error(
+    throw http400Error(
       ErrorCode.ChapterRandomQueryVarError,
       `${FROM_CHAPTER_ID} should be a number`,
     );
   }
 
   if (id < defaultID) {
-    throw HTTP400Error(
+    throw http400Error(
       ErrorCode.ChapterRandomQueryVarError,
       `invalid ${FROM_CHAPTER_ID}`,
     );

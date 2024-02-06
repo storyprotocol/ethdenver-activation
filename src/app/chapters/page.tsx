@@ -20,7 +20,7 @@ export default function Page() {
   const chaptersListData = data?.chapters || [];
 
   return (
-    <main className={"flex-1"}>
+    <main className={"w-full max-w-screen-sm flex-1"}>
       <div className={"px-4 pt-8"}>
         <div className={"text-xl"}>Choose a story to continue...</div>
 
@@ -36,7 +36,7 @@ export default function Page() {
 
         {!isLoading && isValidating && <Spinner />}
 
-        <div className={"fixed bottom-16 left-0 w-screen text-center"}>
+        <div className={"w-full p-4 text-center"}>
           <Button className={"mx-auto"} onClick={() => mutate()}>
             Shuffle
             <Image className={"ml-1"} src={shuffleIcon} alt={"Shuffle"} />

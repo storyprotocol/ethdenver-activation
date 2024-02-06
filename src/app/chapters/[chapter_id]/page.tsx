@@ -5,10 +5,9 @@ import arrowLeftIcon from "@/assets/common/arrow_left.svg";
 import Image from "next/image";
 import useSWR from "swr";
 import { ChapterListResponse } from "@/interface/chapterListResponse";
-import ChapterList from "@/app/chapters/[chapter_id]/ChapterList";
-import NewChapterTextarea from "@/app/chapters/[chapter_id]/NewChapterTextarea";
-import { useRouter } from "next/navigation";
-import SubmitSheet from "@/app/chapters/[chapter_id]/SubmitSheet";
+import ChapterList from "./ChapterList";
+import NewChapterTextarea from "./NewChapterTextarea";
+import SubmitSheet from "./SubmitSheet";
 import { useState } from "react";
 
 export default function Page({ params }: { params: { chapter_id: string } }) {
@@ -21,6 +20,7 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
   );
 
   const chapterListData = data?.chapters || [];
+  const storyId = chapterListData[0]?.story_id?.toString() || "";
 
   const onSubmit = (newContent: string) => {
     setPreparedContent(newContent);
@@ -28,7 +28,7 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
   };
 
   return (
-    <main className={"flex-1"}>
+    <main className={"w-full max-w-screen-sm flex-1"}>
       <div className={"px-4 pt-8"}>
         <Link
           className={"flex space-x-1 text-xl font-medium"}
@@ -45,6 +45,7 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
         <SubmitSheet
           open={open}
           onOpenChange={setOpen}
+          storyId={storyId}
           chapterId={chapterId}
           content={preparedContent}
         />
