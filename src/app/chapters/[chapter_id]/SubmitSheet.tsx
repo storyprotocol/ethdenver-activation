@@ -56,8 +56,10 @@ export default function SubmitSheet({
         `/api/chapters`,
         requestBody,
       );
-      setIsSubmitting(false);
-
+      /**
+       * Redirect to the graph page need times when the network is slow
+       * So we didn't setIsSubmitting(false) to keep the loading spinner
+       */
       router.push(`/graph?highlight_id=${response.data.id}`);
     } catch (e) {
       console.error("Failed to create chapter", e);
@@ -81,15 +83,14 @@ export default function SubmitSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side={"bottom"} className={"h-full w-full bg-linear p-0"}>
+      <SheetContent
+        side={"bottom"}
+        className={"flex h-full w-full justify-center bg-linear p-0"}
+      >
         <div
-          className={
-            "absolute left-1/2 flex h-full w-full max-w-screen-sm -translate-x-1/2 flex-col px-4 pt-8"
-          }
+          className={"flex h-full w-full max-w-screen-sm flex-col px-4 pt-8"}
         >
           <div className={"text-5xl font-medium"}>Exquisite Story</div>
-
-          <div className={"fixed bottom-0 left-1/2 -translate-x-1/2"}></div>
 
           {isSubmitting && <Spinner />}
 

@@ -30,7 +30,9 @@ export default function ChapterItem({
         </span>
       </div>
       <div className={cn("flex items-center", cardStyle ? "mt-2.5" : "mt-1")}>
-        <div className={"flex-1 text-xl"}>{chapter.content}</div>
+        <div className={"w-full flex-1 break-words text-xl"}>
+          {chapter.content}
+        </div>
 
         {showSiblingCount ? (
           <div className={"ml-2 flex w-12 items-center font-medium"}>
