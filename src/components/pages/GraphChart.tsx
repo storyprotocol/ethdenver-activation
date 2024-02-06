@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import * as echarts from "echarts";
+import { init, EChartsType } from "echarts";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 interface GraphChartProps {
   className?: string;
@@ -12,23 +13,40 @@ export default function GraphChart(props: GraphChartProps) {
   const { className, highlightId } = props;
   const [allData, setAllData] = useState([]);
   const lastId = useRef(0);
-  const chartRef = useRef(null);
+  const [gravity, setGravity] = useState(0.3);
+  const domRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<EChartsType>();
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const isMediumDevice = useMediaQuery(
+    "only screen and (min-width : 769px) and (max-width : 992px)",
+  );
+  const isLargeDevice = useMediaQuery(
+    "only screen and (min-width : 993px) and (max-width : 1200px)",
+  );
+  const isExtraLargeDevice = useMediaQuery(
+    "only screen and (min-width : 1201px)",
+  );
 
   const getData = useCallback(async () => {
-    const response = await fetch(
-      `/api/chapters?lastId=${lastId.current}&limit=10000`,
-    );
-    const data = await response.json();
-    if (data.chapters && data.chapters.length) {
-      const dataLastId = data.chapters[data.chapters.length - 1].id;
-      if (lastId.current !== dataLastId) {
-        lastId.current = dataLastId;
-        setAllData((d) => d.concat(data.chapters));
+    try {
+      const response = await fetch(
+        `/api/chapters/relationship?lastId=${lastId.current}&limit=10000`,
+      );
+      const data = await response.json();
+      if (data.chapters && data.chapters.length) {
+        const dataLastId = data.chapters[data.chapters.length - 1].id;
+        if (lastId.current !== dataLastId) {
+          lastId.current = dataLastId;
+          setAllData((d) => d.concat(data.chapters));
+        }
       }
+    } catch (e) {
+      console.log(e);
     }
   }, []);
 
   useEffect(() => {
+    getData();
     const intervalId = setInterval(() => {
       getData();
     }, 5000);
@@ -69,9 +87,25 @@ export default function GraphChart(props: GraphChartProps) {
   };
 
   useEffect(() => {
-    if (chartRef && allData && allData.length) {
+    setGravity(0.4);
+  }, [isSmallDevice]);
+
+  useEffect(() => {
+    setGravity(0.3);
+  }, [isMediumDevice]);
+
+  useEffect(() => {
+    setGravity(0.2);
+  }, [isLargeDevice]);
+
+  useEffect(() => {
+    setGravity(0.1);
+  }, [isExtraLargeDevice]);
+
+  useEffect(() => {
+    if (domRef && domRef.current && allData) {
       const chartData = defaultChartData(allData);
-      const myChart = echarts.init(chartRef.current);
+      chartRef.current = init(domRef.current);
       const option = {
         legend: {
           show: false,
@@ -120,16 +154,30 @@ export default function GraphChart(props: GraphChartProps) {
             force: {
               edgeLength: [10, 50],
               repulsion: 20,
-              gravity: 0.3,
+              gravity: gravity,
               layoutAnimation: true,
             },
             edges: chartData.links,
           },
         ],
       };
-      myChart.setOption(option);
+      chartRef.current.setOption(option);
     }
-  }, [allData, chartRef, highlightId]);
+    () => {
+      chartRef.current?.dispose();
+    };
+  }, [allData, domRef, highlightId, gravity]);
 
-  return <div className={className} ref={chartRef}></div>;
+  useEffect(() => {
+    window.addEventListener("resize", function () {
+      chartRef.current?.resize();
+    });
+    return () => {
+      window.removeEventListener("resize", function () {
+        chartRef.current?.resize();
+      });
+    };
+  }, []);
+
+  return <div className={className} ref={domRef}></div>;
 }
