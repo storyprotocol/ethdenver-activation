@@ -1,41 +1,65 @@
+import { Chapter } from "@/interface/chapter";
 import { NextRequest } from "next/server";
-import { ErrorCode, HTTP400Error, HTTP500Error } from "../../errorUtils";
+import {
+  CusEnvVarsConfigError,
+  CusRangeError,
+  CusTypeError,
+  ErrorCode,
+  errorHandler,
+} from "../../errorUtils";
+import { ChapterMO, queryChaptersByRandom } from "../../model";
 import { EnvKey, GetEnv } from "../../utils";
-import { queryChaptersByRandom } from "./server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest): Promise<Response> {
   const searchParams = request.nextUrl.searchParams;
 
-  let count = verify(searchParams.get("count"));
-  if (count instanceof Response) {
-    return count as Response;
+  let count = 0;
+  let chapters: ChapterMO[] = [];
+  try {
+    count = verify(searchParams.get("count"));
+    chapters = await queryChaptersByRandom(count);
+  } catch (err) {
+    return errorHandler(err as Error);
   }
 
-  const response = await queryChaptersByRandom(Number(count));
-
-  return Response.json(response);
+  return Response.json({
+    chapters: chapters.map((chapter) => {
+      return {
+        id: chapter.id,
+        story_id: chapter.story_id,
+        content: chapter.content,
+        parent_id: chapter.parent_id,
+        path: chapter.path,
+      } as Chapter;
+    }),
+  });
 }
 
-function verify(value: string | null): number | Response {
-  let defulMinNum = GetEnv(EnvKey.ChapterRandomMinCount) || 3;
-
-  let count = value || defulMinNum;
+function verify(value: string | null): number {
+  let count = value || GetEnv(EnvKey.ChapterRandomMinCount) || 3;
   if (isNaN(Number(count))) {
-    return HTTP400Error(
+    throw new CusTypeError(
       ErrorCode.ChapterRandomQueryVarError,
       "count should be a number",
     );
   }
 
-  let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount) || 100;
-  if (
-    isNaN(Number(defaultMaxMum)) ||
+  let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount) || 10;
+  if (isNaN(Number(defaultMaxMum))) {
+    throw new CusEnvVarsConfigError(
+      ErrorCode.ChapterRandomQueryVarError,
+      "max count should be a number",
+    );
+  } else if (
     Number(defaultMaxMum) == 0 ||
-    Number(count) > Number(defaultMaxMum)
+    Number(defaultMaxMum) < Number(count)
   ) {
-    return HTTP500Error(ErrorCode.ChapterRandomMaxNotConfigError);
+    throw new CusRangeError(
+      ErrorCode.ChapterRandomQueryVarError,
+      "max count should be greater than range",
+    );
   }
 
   return Number(count);
