@@ -1,4 +1,5 @@
 import {
+  CusDBError,
   CusEntityNotFoundError,
   CusEntityNotUniqueError,
   ErrorCode,
@@ -55,18 +56,57 @@ export async function queryChapterSilding(
   return rows.map((row) => toChapterMO(row));
 }
 
+export async function queryChapterByIdAndSid(
+  storyId: number,
+  Id: number,
+): Promise<ChapterMO> {
+  const client = await db.connect();
+  const { rows } =
+    await client.sql`SELECT * FROM chapter WHERE story_id = ${storyId} and id = ${Id}`;
+  if (rows.length === 0) {
+    throw new CusEntityNotFoundError(
+      ErrorCode.ChapterNotExistError,
+      `Parent Chapter ${Id} not found`,
+    );
+  }
+
+  if (rows.length > 1) {
+    throw new CusEntityNotUniqueError(
+      ErrorCode.ChapterIdUniqueError,
+      `Parent Chapter ${Id} has more than one record`,
+    );
+  }
+  return toChapterMO(rows[0]);
+}
+
+export async function creaeteChapter(chapter: ChapterMO): Promise<number> {
+  try {
+    const client = await db.connect();
+    const { rows } =
+      await client.sql`INSERT INTO chapter (story_id, content, wallet_address, level, path, is_anonymous, parent_id, credential, created_at) VALUES (${chapter.story_id}, ${chapter.content}, ${chapter.wallet_address}, ${chapter.level}, ${JSON.stringify(chapter.path)}, ${chapter.is_anonymous}, ${chapter.parent_id}, ${chapter.credential}, ${chapter.created_at}) RETURNING id`;
+    return rows[0].id;
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.ChapterCreateError,
+      `Failed to create chapter: ${err}`,
+    );
+  }
+}
+
 function toChapterMO(row: QueryResultRow): ChapterMO {
   return {
-    id: row.id,
-    story_id: row.story_id,
+    id: parseInt(row.id),
+    story_id: parseInt(row.story_id),
     content: row.content,
     wallet_address: row.wallet_address,
-    level: row.level,
+    level: parseInt(row.level),
     path: row.path,
     is_anonymous: row.is_anonymous,
-    parent_id: row.parent_id,
+    parent_id: parseInt(row.parent_id),
     credential: row.credential,
-    created_at: row.created_at,
+    created_at: parseInt(row.created_at),
   } as ChapterMO;
 }
 export interface ChapterMO {
