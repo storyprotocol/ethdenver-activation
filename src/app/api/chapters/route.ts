@@ -3,7 +3,7 @@ import { CreateChapterRequest } from "@/interface/createChapterRequest";
 import { CreateChapterResponse } from "@/interface/createChapterResponse";
 import { CfgDefaultValue } from "../config";
 import { CusTypeError, ErrorCode, errorHandler } from "../errorUtils";
-import { ChapterMO, creaeteChapter, queryChapterByIdAndSid } from "../model";
+import { ChapterMO, createChapter, queryChapterByIdAndSid } from "../model";
 import { EnvKey, GetEnv } from "../utils";
 
 import { NextRequest } from "next/server";
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest): Promise<Response> {
       Number(requestData.story_id),
       Number(requestData.parent_id),
     );
-    const id = await creaeteChapter({
+    const id = await createChapter({
       story_id: Number(requestData.story_id),
       content: requestData.content,
       wallet_address: wallet_address,

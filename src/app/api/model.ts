@@ -7,7 +7,7 @@ import {
 import { QueryResultRow } from "@neondatabase/serverless";
 import { db } from "@vercel/postgres";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export async function queryChaptersByRandom(num: number): Promise<ChapterMO[]> {
   const client = await db.connect();
@@ -41,9 +41,11 @@ export async function queryChapterByIds(
   parentIds: number[],
 ): Promise<ChapterMO[]> {
   const client = await db.connect();
-  const { rows } =
-    await client.sql`SELECT * FROM chapter WHERE id in (${parentIds.join(",")})`;
-  return rows.map((row) => toChapterMO(row));
+  const text =
+    "SELECT * FROM chapter WHERE id = ANY($1::int[]) order by id asc";
+  const values = [parentIds];
+  const res = await client.query(text, values);
+  return res.rows.map((row) => toChapterMO(row));
 }
 
 export async function queryChapterSilding(
@@ -79,7 +81,7 @@ export async function queryChapterByIdAndSid(
   return toChapterMO(rows[0]);
 }
 
-export async function creaeteChapter(chapter: ChapterMO): Promise<number> {
+export async function createChapter(chapter: ChapterMO): Promise<number> {
   try {
     const client = await db.connect();
     const { rows } =
