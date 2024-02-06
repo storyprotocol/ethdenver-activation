@@ -45,7 +45,7 @@ function verify(value: string | null): number {
       "count should be a number",
     );
   }
-
+  
   let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount) || 10;
   if (isNaN(Number(defaultMaxMum))) {
     throw new CusEnvVarsConfigError(
