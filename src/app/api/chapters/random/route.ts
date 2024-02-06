@@ -1,5 +1,6 @@
 import { Chapter } from "@/interface/chapter";
 import { NextRequest } from "next/server";
+import { CfgDefaultValue } from "../../config";
 import {
   CusEnvVarsConfigError,
   CusRangeError,
@@ -31,6 +32,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         story_id: chapter.story_id,
         content: chapter.content,
         parent_id: chapter.parent_id,
+        wallet_address: chapter.wallet_address,
         path: chapter.path,
       } as Chapter;
     }),
@@ -38,7 +40,10 @@ export async function GET(request: NextRequest): Promise<Response> {
 }
 
 function verify(value: string | null): number {
-  let count = value || GetEnv(EnvKey.ChapterRandomMinCount) || 3;
+  let count =
+    value ||
+    GetEnv(EnvKey.ChapterRandomMinCount) ||
+    CfgDefaultValue.ChapterRandomMinValue;
   if (isNaN(Number(count))) {
     throw new CusTypeError(
       ErrorCode.ChapterRandomQueryVarError,
@@ -46,7 +51,9 @@ function verify(value: string | null): number {
     );
   }
 
-  let defaultMaxMum = GetEnv(EnvKey.ChapterRandomMaxCount) || 10;
+  let defaultMaxMum =
+    GetEnv(EnvKey.ChapterRandomMaxCount) ||
+    CfgDefaultValue.ChapterRandomMaxValue;
   if (isNaN(Number(defaultMaxMum))) {
     throw new CusEnvVarsConfigError(
       ErrorCode.ChapterRandomQueryVarError,

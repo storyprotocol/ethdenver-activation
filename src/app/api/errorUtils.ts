@@ -41,6 +41,12 @@ class CusRangeError extends BasicError {
   }
 }
 
+class CusDBError extends BasicError {
+  constructor(code: string, message: string) {
+    super(code, 500, message);
+  }
+}
+
 function http400Error(code: string, msg?: string): Response {
   return NextResponse.json(
     {
@@ -72,6 +78,11 @@ const ErrorCode = {
   ChapterIDTypeError: "Query_Var_ID_Type_Error",
   ChapterNotExistError: "Chapter_Not_Exist",
   ChapterIdUniqueError: "Chapter_ID_Unique_Error",
+  ChapterCreateError: "Chapter_Create_Error",
+
+  StoryIDTypeError: "Story_ID_Type_Error",
+  ChapterContentRequiredError: "Chapter_Content_Required_Error",
+  WalletAddressTypeError: "Wallet_Address_Type_Error",
 };
 
 function errorHandler(err: Error): Response {
@@ -91,6 +102,7 @@ function errorHandler(err: Error): Response {
 }
 export {
   BasicError,
+  CusDBError,
   CusEntityNotFoundError,
   CusEntityNotUniqueError,
   CusEnvVarsConfigError,
