@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "flex min-h-screen flex-col items-center bg-linear font-sans antialiased",
+          "flex min-h-screen min-h-svh flex-col items-center bg-linear font-sans antialiased",
           acronymFont.variable,
         )}
       >

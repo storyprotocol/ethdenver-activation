@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 const uploadTotal = process.env.UPLOAD_TOTAL || "10";
 const uploadInterval = process.env.UPLOAD_INTERVAL || "15";
-const isOpen = process.env.IS_OPEN || "false";
+const isOpen = process.env.IS_UPLOAD_OPEN || "false";
 
 export async function GET(request: NextRequest): Promise<Response> {
   if (isOpen === "false") {
@@ -39,8 +39,8 @@ export async function GET(request: NextRequest): Promise<Response> {
   }
 
   const total = parseInt(uploadTotal);
-  const chapterResult = await uploadChapter(total);
-  const relationshipResult = await uploadRelationship(
+  const chapterResult: number = await uploadChapter(total);
+  const relationshipResult: number = await uploadRelationship(
     total,
     "PREVIOUS_CHAPTER",
   );
@@ -52,9 +52,17 @@ export async function GET(request: NextRequest): Promise<Response> {
     id: uploadStatistics.id,
     lastUploadTime: now,
     storyUploaded: uploadStatistics.storyUploaded,
-    chapterUploaded: uploadStatistics.chapterUploaded + chapterResult,
-    relationshipUploaded:
-      uploadStatistics.relationshipUploaded + relationshipResult,
+    chapterUploaded: sum(uploadStatistics.chapterUploaded, chapterResult),
+    relationshipUploaded: sum(
+      uploadStatistics.relationshipUploaded,
+      relationshipResult,
+    ),
   });
   return Response.json(response);
+}
+
+function sum(a: number | string, b: number | string): number {
+  const aNum = typeof a === "string" ? parseInt(a) : a;
+  const bNum = typeof b === "string" ? parseInt(b) : b;
+  return aNum + bNum;
 }

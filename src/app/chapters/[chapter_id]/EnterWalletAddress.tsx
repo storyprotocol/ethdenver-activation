@@ -6,11 +6,14 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export default function EnterWalletAddress({
+  walletAddress,
+  setWalletAddress,
   onSubmit,
 }: {
-  onSubmit: (walletAddress: string) => void;
+  walletAddress: string;
+  setWalletAddress: (walletAddress: string) => void;
+  onSubmit: () => void;
 }) {
-  const [walletAddress, setWalletAddress] = useState("");
   const [isValid, setIsValid] = useState(false);
   const showValidation = !!walletAddress && !isValid;
 
@@ -44,8 +47,8 @@ export default function EnterWalletAddress({
           )}
           <Button
             className={"select-none space-x-1"}
-            onClick={() => onSubmit(walletAddress)}
-            disabled={showValidation}
+            onClick={() => onSubmit()}
+            disabled={showValidation || !walletAddress}
           >
             <span>Submit</span>
             <Image
