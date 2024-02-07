@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/upload/chapter",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}

@@ -43,4 +43,16 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - **API_CHAPTER_RANDOM_MAX_COUNT** : Setup the max count chapters info,default is 10 in the code
 - **API_CHAPTER_UP_WITH_SELF_DEPTH** : Gets the section from itself and up to the specified depth, default is 3 in the code
 - **API_CHAPTER_RELATIONSHIP_MAX_LIMIT** : Return limite count chapters mode info,  default is 10000
-- **API_DEFAULT_WALLET_ADDRESS** ：Setup the default wallet address 
+- **API_DEFAULT_WALLET_ADDRESS** ：Setup the default wallet address
+
+## Cron Job
+
+### Extend Cron Jobs
+1. Wrap your task into a GET function and default export it if necessary.
+2. Register your cron job in the ``` /vercel.json ``` 
+    - make sure the ```path``` field points to the file where contains the cron job
+    - ```schedule``` specifies cron job expression, that specifies the period of the cron job
+
+Note: 
+  - [Learn more about Vercel Cron Job](https://vercel.com/docs/cron-jobs)
+  - [Learn more about Cron Job Expressions](https://cron-template.vercel.app/)
