@@ -16,6 +16,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
+    "@story-protocol/core-sdk": "^0.1.0-alpha",
     "@vercel/postgres-kysely": "^0.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -29,7 +30,6 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^2.7.6",
     "web3-validator": "^2.0.4"
   },
   "devDependencies": {

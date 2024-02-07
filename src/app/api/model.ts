@@ -79,6 +79,32 @@ export async function queryChapterByIdAndSid(
   return toChapterMO(rows[0]);
 }
 
+export async function queryIPAsset(
+  num: number,
+  type: number,
+): Promise<AssetMO[]> {
+  const client = await db.connect();
+  const { rows } =
+    await client.sql`SELECT * FROM ip_asset WHERE status = 0 and type = ${type} order by id asc limit ${num}`;
+  return rows.map((row) => toAssetMO(row));
+}
+
+export async function queryRelationship(
+  num: number,
+  relationshipType: string,
+): Promise<RelationshipMO[]> {
+  const client = await db.connect();
+  const { rows } =
+    await client.sql`select id, relationship_type, (select asset_seq_id from ip_asset where src_asset_id = credential) as src_asset, (select asset_seq_id from ip_asset where dst_asset_id = credential) as dst_asset from relationship where status = 0  and relationship_type = ${relationshipType} order by id asc limit ${num}`;
+  return rows.map((row) => toRelationshipMO(row));
+}
+
+export async function queryUploadStatistics(): Promise<UploadStatisticMO> {
+  const client = await db.connect();
+  const { rows } = await client.sql`SELECT * FROM upload_data_statistics`;
+  return toStatisticMO(rows[0]);
+}
+
 export async function creaeteChapter(chapter: ChapterMO): Promise<number> {
   try {
     const client = await db.connect();
@@ -91,6 +117,48 @@ export async function creaeteChapter(chapter: ChapterMO): Promise<number> {
     throw new CusDBError(
       ErrorCode.ChapterCreateError,
       `Failed to create chapter: ${err}`,
+    );
+  }
+}
+
+export async function updateAsset(asset: AssetMO) {
+  try {
+    const client = await db.connect();
+    await client.sql`UPDATE ip_asset SET status = ${asset.status}, tx_hash = ${asset.tx_hash}, asset_seq_id = ${asset.asset_seq_id}, metadata_url = ${asset.metadata_url} WHERE id = ${asset.id}`;
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.UpdateAssetError,
+      `Failed to update asset ${asset.id}: ${err}`,
+    );
+  }
+}
+
+export async function updateRelationship(relationship: RelationshipMO) {
+  try {
+    const client = await db.connect();
+    await client.sql`UPDATE relationship SET status = ${relationship.status}, tx_hash = ${relationship.tx_hash}, relationship_seq_id = ${relationship.relationship_seq_id} WHERE id = ${relationship.id}`;
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.UpdateRelationshipError,
+      `Failed to update relationship ${relationship.id}: ${err}`,
+    );
+  }
+}
+
+export async function updateUploadStatistics(statistics: UploadStatisticMO) {
+  try {
+    const client = await db.connect();
+    await client.sql`UPDATE upload_data_statistics SET last_upload_time = ${statistics.lastUploadTime}, total_upload_story = ${statistics.storyUploaded}, total_upload_chapter = ${statistics.chapterUploaded}, total_upload_relationship = ${statistics.relationshipUploaded} WHERE id = ${statistics.id}`;
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.UpdateStatisticError,
+      `Failed to update upload statistics: ${err}`,
     );
   }
 }
@@ -120,4 +188,68 @@ export interface ChapterMO {
   parent_id: number;
   credential: string;
   created_at: number;
+}
+
+function toAssetMO(row: QueryResultRow): AssetMO {
+  return {
+    id: row.id,
+    credential: row.credential,
+    name: row.name || row.credential,
+    asset_type: row.type,
+    description: row.description,
+    belong_to: row.belong_to,
+    metadata_url: row.metadata_url,
+    asset_seq_id: row.asset_seq_id,
+    tx_hash: row.tx_hash,
+    status: row.status,
+  } as AssetMO;
+}
+
+export interface AssetMO {
+  id: number;
+  credential: string;
+  name: string;
+  asset_type: number;
+  description: string;
+  belong_to?: string;
+  metadata_url?: string;
+  asset_seq_id?: string;
+  tx_hash?: string;
+  status: number;
+}
+
+function toRelationshipMO(row: QueryResultRow): RelationshipMO {
+  return {
+    id: row.id,
+    relationship_type: row.relationship_type,
+    src_asset: row.src_asset,
+    dst_asset: row.dst_asset,
+  } as RelationshipMO;
+}
+
+export interface RelationshipMO {
+  id: number;
+  relationship_type: string;
+  src_asset?: number;
+  dst_asset?: number;
+  relationship_seq_id?: string;
+  tx_hash?: string;
+  status: number;
+}
+
+function toStatisticMO(row: QueryResultRow): UploadStatisticMO {
+  return {
+    id: row.id,
+    lastUploadTime: row.last_upload_time || 0,
+    storyUploaded: row.total_upload_story || 0,
+    chapterUploaded: row.total_upload_chapter,
+    relationshipUploaded: row.total_upload_relationship || 0,
+  } as UploadStatisticMO;
+}
+export interface UploadStatisticMO {
+  id: string;
+  lastUploadTime: number;
+  storyUploaded: number;
+  chapterUploaded: number;
+  relationshipUploaded: number;
 }

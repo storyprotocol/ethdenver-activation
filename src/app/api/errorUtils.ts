@@ -70,7 +70,7 @@ function http500Error(code: string): Response {
 const ErrorCode = {
   ChapterRelationshipLimitError: "Query_Var_Relationship_limit_Error",
   DatabaseError: "Database_Error",
-  
+
   SystemError: "Original_Error",
   ChapterRandomQueryVarError: "Query_Var_Random_Error",
   ChapterRandomMaxNotConfigError: "Query_Var_Random_Not_Config_Error",
@@ -82,6 +82,9 @@ const ErrorCode = {
   ChapterNotExistError: "Chapter_Not_Exist",
   ChapterIdUniqueError: "Chapter_ID_Unique_Error",
   ChapterCreateError: "Chapter_Create_Error",
+  UpdateRelationshipError: "Update_Relationship_Error",
+  UpdateAssetError: "Update_Asset_Error",
+  UpdateStatisticError: "Update_Statistic_Error",
 
   StoryIDTypeError: "Story_ID_Type_Error",
   ChapterContentRequiredError: "Chapter_Content_Required_Error",
