@@ -13,12 +13,19 @@ export default async function Page() {
           <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] mb-10 whitespace-nowrap text-[56px] font-medium">
             exquisitestory.xyz
           </div>
-          <QRCode
-            size={200}
-            value={envConfig.QR_CODE_TV || " "}
-            fgColor="#FFFFFF"
-            bgColor="transparent"
-          />
+          {envConfig.QR_CODE_TV ? (
+            <QRCode
+              size={200}
+              value={envConfig.QR_CODE_TV || ""}
+              fgColor="#FFFFFF"
+              bgColor="transparent"
+            />
+          ) : (
+            <>
+              Please set the QR code address environment variable:
+              NEXT_PUBLIC_QR_CODE_TV
+            </>
+          )}
         </div>
       </div>
       <GraphChart className="w-6/12 min-w-px grow" isTv />

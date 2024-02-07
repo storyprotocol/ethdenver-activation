@@ -44,6 +44,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - **API_CHAPTER_UP_WITH_SELF_DEPTH** : Gets the section from itself and up to the specified depth, default is 3 in the code
 - **API_CHAPTER_RELATIONSHIP_MAX_LIMIT** : Return limite count chapters mode info,  default is 10000
 - **API_DEFAULT_WALLET_ADDRESS** ：Setup the default wallet address
+- **NEXT_PUBLIC_QR_CODE_TV** ：Setup the QR code address
 
 ## Cron Job
 
