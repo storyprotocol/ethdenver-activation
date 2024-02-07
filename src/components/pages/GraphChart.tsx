@@ -3,36 +3,40 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { init, EChartsType } from "echarts";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import Spinner from "./Spinner";
+import axios from "axios";
+import {
+  ChapterRelationshipResponse,
+  ChapterRelationship,
+} from "@/interface/chapterRelationShipResponse";
 
 interface GraphChartProps {
   className?: string;
   highlightId?: string;
+  isTv?: boolean;
 }
 
 export default function GraphChart(props: GraphChartProps) {
-  const { className, highlightId } = props;
-  const [allData, setAllData] = useState([]);
+  const { className, highlightId, isTv } = props;
+  const [allData, setAllData] = useState<ChapterRelationship[]>([]);
   const lastId = useRef(0);
-  const [gravity, setGravity] = useState(0.3);
+  const [isLoading, setIsLoading] = useState(true);
+  const [forceOpt, setForceOpt] = useState({
+    edgeLength: [10, 50],
+    repulsion: 20,
+    gravity: 0.3,
+  });
   const domRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsType>();
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const isMediumDevice = useMediaQuery(
-    "only screen and (min-width : 769px) and (max-width : 992px)",
-  );
-  const isLargeDevice = useMediaQuery(
-    "only screen and (min-width : 993px) and (max-width : 1200px)",
-  );
-  const isExtraLargeDevice = useMediaQuery(
-    "only screen and (min-width : 1201px)",
-  );
+  const isSmallDevice = useMediaQuery("(max-width : 768px)");
+  const isMediumDevice = useMediaQuery("(min-width : 769px)");
 
   const getData = useCallback(async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get<ChapterRelationshipResponse>(
         `/api/chapters/relationship?lastId=${lastId.current}&limit=10000`,
       );
-      const data = await response.json();
+      const data = response.data;
       if (data.chapters && data.chapters.length) {
         const dataLastId = data.chapters[data.chapters.length - 1].id;
         if (lastId.current !== dataLastId) {
@@ -40,12 +44,15 @@ export default function GraphChart(props: GraphChartProps) {
           setAllData((d) => d.concat(data.chapters));
         }
       }
+      setIsLoading(false);
     } catch (e) {
       console.log(e);
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     getData();
     const intervalId = setInterval(() => {
       getData();
@@ -55,10 +62,10 @@ export default function GraphChart(props: GraphChartProps) {
     };
   }, [getData]);
 
-  const defaultChartData = (data: any[]) => {
-    const categories: any[] = [];
-    const links: any[] = [];
-    const nodes: any[] = [];
+  const defaultChartData = (data: ChapterRelationship[]) => {
+    const categories: { base: number; name: number }[] = [];
+    const links: { source: number; target: number }[] = [];
+    const nodes: { category: number; id: number }[] = [];
     data.forEach((chapter) => {
       const categoriesIdList = categories.map((item) => item.name);
       if (!categoriesIdList.includes(chapter.story_id)) {
@@ -87,20 +94,24 @@ export default function GraphChart(props: GraphChartProps) {
   };
 
   useEffect(() => {
-    setGravity(0.4);
+    if (isSmallDevice) {
+      setForceOpt({
+        edgeLength: [10, 20],
+        repulsion: 20,
+        gravity: 0.4,
+      });
+    }
   }, [isSmallDevice]);
 
   useEffect(() => {
-    setGravity(0.3);
+    if (isMediumDevice) {
+      setForceOpt({
+        edgeLength: [10, 20],
+        repulsion: 20,
+        gravity: 0.3,
+      });
+    }
   }, [isMediumDevice]);
-
-  useEffect(() => {
-    setGravity(0.2);
-  }, [isLargeDevice]);
-
-  useEffect(() => {
-    setGravity(0.1);
-  }, [isExtraLargeDevice]);
 
   useEffect(() => {
     if (domRef && domRef.current && allData) {
@@ -126,8 +137,13 @@ export default function GraphChart(props: GraphChartProps) {
             data: chartData.nodes.map(function (node: any, idx: number) {
               node.id = idx;
               node.legendHoverLink = false;
+              node.cursor = "default";
               if (String(node.id) === highlightId) {
                 node.symbolSize = 20;
+                // node.itemStyle = {
+                //   borderWidth: 1,
+                //   borderColor: "red",
+                // };
                 node.label = {
                   show: true,
                   formatter: "{a|}",
@@ -152,9 +168,13 @@ export default function GraphChart(props: GraphChartProps) {
             }),
             categories: chartData.categories,
             force: {
-              edgeLength: [10, 50],
-              repulsion: 20,
-              gravity: gravity,
+              ...(!isTv
+                ? forceOpt
+                : {
+                    edgeLength: [10, 40],
+                    repulsion: 40,
+                    gravity: 0.2,
+                  }),
               layoutAnimation: true,
             },
             edges: chartData.links,
@@ -166,7 +186,7 @@ export default function GraphChart(props: GraphChartProps) {
     () => {
       chartRef.current?.dispose();
     };
-  }, [allData, domRef, highlightId, gravity]);
+  }, [allData, domRef, highlightId, forceOpt, isTv]);
 
   useEffect(() => {
     window.addEventListener("resize", function () {
@@ -179,5 +199,10 @@ export default function GraphChart(props: GraphChartProps) {
     };
   }, []);
 
-  return <div className={className} ref={domRef}></div>;
+  return (
+    <>
+      {isLoading && <Spinner />}
+      <div className={className} ref={domRef}></div>
+    </>
+  );
 }
