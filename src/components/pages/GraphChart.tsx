@@ -32,34 +32,41 @@ export default function GraphChart(props: GraphChartProps) {
   const isSmallDevice = useMediaQuery("(max-width : 768px)");
   const isMediumDevice = useMediaQuery("(min-width : 769px)");
 
-  const getData = useCallback(async () => {
+  const getData = useCallback(async (abortCtrl: AbortController) => {
     try {
       const response = await axios.get<ChapterRelationshipResponse>(
-        `/api/chapters/relationship?lastId=${lastId.current}&limit=10000`,
+        `/api/chapters/relationship?from_chapter_id=${lastId.current}&limit=10000`,
+        {
+          signal: abortCtrl.signal,
+        },
       );
       const data = response.data;
       if (data.chapters && data.chapters.length) {
         const dataLastId = data.chapters[data.chapters.length - 1].id;
         if (lastId.current !== dataLastId) {
-          lastId.current = dataLastId;
           setAllData((d) => d.concat(data.chapters));
         }
       }
       setIsLoading(false);
     } catch (e) {
+      if (abortCtrl.signal.aborted) {
+        return;
+      }
       console.log(e);
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    const abortControl = new AbortController();
     setIsLoading(true);
-    getData();
+    getData(abortControl);
     const intervalId = setInterval(() => {
-      getData();
+      getData(abortControl);
     }, 5000);
     return () => {
       clearInterval(intervalId);
+      abortControl.abort();
     };
   }, [getData]);
 
@@ -67,12 +74,15 @@ export default function GraphChart(props: GraphChartProps) {
     const categories: { base: string; name: string }[] = [];
     const links: { source: string; target: string }[] = [];
     const nodes: { category: number; id: string }[] = [];
-    const idList: string[] = [];
+    let dataLastId = lastId.current;
     data.forEach((chapter) => {
       const categoriesIdList = categories.map((item) => item.name);
       const story_id = String(chapter.story_id);
       const parent_id = String(chapter.parent_id);
       const id = String(chapter.id);
+      if (dataLastId < Number(id)) {
+        dataLastId = Number(id);
+      }
       if (!categoriesIdList.includes(story_id)) {
         categories.push({
           base: story_id,
@@ -91,6 +101,7 @@ export default function GraphChart(props: GraphChartProps) {
         id: id,
       });
     });
+    lastId.current = dataLastId;
     return {
       categories,
       links,
