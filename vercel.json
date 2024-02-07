@@ -2,6 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/uploadChapter",
+      "comment_to_schedule": "vercel hobby account limited cron period to daily, please feel free to modify the 'schedule' field",
       "schedule": "* * * * *"
     }
   ]
