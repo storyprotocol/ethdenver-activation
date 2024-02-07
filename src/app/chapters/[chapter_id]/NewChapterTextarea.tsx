@@ -1,4 +1,3 @@
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
@@ -30,12 +29,12 @@ export default function NewChapterTextarea({
         continue the story...
       </div>
 
-      <div className={"relative"}>
+      <div className={"group relative"}>
         <TextareaAutosize
           className={cn(
             "block w-full rounded-md p-4 pb-12 pt-6 text-xl text-primary-foreground",
             "placeholder:text-primary-foreground/30 focus-visible:outline-none",
-            "min-h-0 transition-all focus:min-h-40",
+            "min-h-0 transition-all focus:min-h-40 group-hover:min-h-40",
           )}
           placeholder={"ie. And may the odds be ever in your favor."}
           value={newContent}
