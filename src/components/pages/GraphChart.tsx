@@ -9,6 +9,7 @@ import {
   ChapterRelationshipResponse,
   ChapterRelationship,
 } from "@/interface/chapterRelationShipResponse";
+import youAreHerePic from "@/assets/chapter/you_are_here.png";
 
 interface GraphChartProps {
   className?: string;
@@ -63,27 +64,31 @@ export default function GraphChart(props: GraphChartProps) {
   }, [getData]);
 
   const defaultChartData = (data: ChapterRelationship[]) => {
-    const categories: { base: number; name: number }[] = [];
-    const links: { source: number; target: number }[] = [];
-    const nodes: { category: number; id: number }[] = [];
+    const categories: { base: string; name: string }[] = [];
+    const links: { source: string; target: string }[] = [];
+    const nodes: { category: number; id: string }[] = [];
+    const idList: string[] = [];
     data.forEach((chapter) => {
       const categoriesIdList = categories.map((item) => item.name);
-      if (!categoriesIdList.includes(chapter.story_id)) {
+      const story_id = String(chapter.story_id);
+      const parent_id = String(chapter.parent_id);
+      const id = String(chapter.id);
+      if (!categoriesIdList.includes(story_id)) {
         categories.push({
-          base: chapter.story_id,
-          name: chapter.story_id,
+          base: story_id,
+          name: story_id,
         });
-        categoriesIdList.push(chapter.story_id);
+        categoriesIdList.push(story_id);
       }
-      if (chapter.parent_id !== 0) {
+      if (parent_id !== "0") {
         links.push({
-          source: chapter.id,
-          target: chapter.parent_id,
+          source: id,
+          target: parent_id,
         });
       }
       nodes.push({
-        category: categoriesIdList.indexOf(chapter.story_id),
-        id: chapter.id,
+        category: categoriesIdList.indexOf(story_id),
+        id: id,
       });
     });
     return {
@@ -134,28 +139,24 @@ export default function GraphChart(props: GraphChartProps) {
             label: {
               show: false,
             },
-            data: chartData.nodes.map(function (node: any, idx: number) {
-              node.id = idx;
+            data: chartData.nodes.map(function (node: any) {
               node.legendHoverLink = false;
               node.cursor = "default";
               if (String(node.id) === highlightId) {
                 node.symbolSize = 20;
-                // node.itemStyle = {
-                //   borderWidth: 1,
-                //   borderColor: "red",
-                // };
                 node.label = {
                   show: true,
                   formatter: "{a|}",
                   position: "top",
+                  padding: [0, 0, -8, 90],
                   rich: {
                     a: {
-                      width: 32,
-                      height: 32,
+                      width: 80,
+                      height: 80,
                       align: "top",
-                      // backgroundColor: {
-                      //   image: shareIconPic.src,
-                      // },
+                      backgroundColor: {
+                        image: youAreHerePic.src,
+                      },
                     },
                   },
                 };
@@ -171,8 +172,8 @@ export default function GraphChart(props: GraphChartProps) {
               ...(!isTv
                 ? forceOpt
                 : {
-                    edgeLength: [10, 40],
-                    repulsion: 40,
+                    edgeLength: [10, 50],
+                    repulsion: 50,
                     gravity: 0.2,
                   }),
               layoutAnimation: true,
