@@ -5,22 +5,20 @@ import {
   ErrorCode,
 } from "@/app/api/errorUtils";
 import { QueryResultRow } from "@neondatabase/serverless";
+import { sql } from "@vercel/postgres";
 import { db } from "@vercel/postgres";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export async function queryChaptersByRandom(num: number): Promise<ChapterMO[]> {
-  const client = await db.connect();
   const { rows } =
-    await client.sql`SELECT * FROM chapter ORDER BY RANDOM() LIMIT ${num}`;
+    await sql`SELECT * FROM chapter ORDER BY RANDOM() LIMIT ${num}`;
 
   return rows.map((row) => toChapterMO(row));
 }
 
 export async function queryChapterById(chapterId: number): Promise<ChapterMO> {
-  const client = await db.connect();
-  const { rows } =
-    await client.sql`SELECT * FROM chapter WHERE id = ${chapterId}`;
+  const { rows } = await sql`SELECT * FROM chapter WHERE id = ${chapterId}`;
   if (rows.length === 0) {
     throw new CusEntityNotFoundError(
       ErrorCode.ChapterNotExistError,
@@ -40,19 +38,19 @@ export async function queryChapterById(chapterId: number): Promise<ChapterMO> {
 export async function queryChapterByIds(
   parentIds: number[],
 ): Promise<ChapterMO[]> {
-  const client = await db.connect();
-  const { rows } =
-    await client.sql`SELECT * FROM chapter WHERE id in (${parentIds.join(",")})`;
-  return rows.map((row) => toChapterMO(row));
+  const text =
+    "SELECT * FROM chapter WHERE id = ANY($1::int[]) order by id asc";
+  const values = [parentIds];
+  const res = await sql.query(text, values);
+  return res.rows.map((row) => toChapterMO(row));
 }
 
 export async function queryChapterSilding(
   storyId: number,
   level: number,
 ): Promise<ChapterMO[]> {
-  const client = await db.connect();
   const { rows } =
-    await client.sql`SELECT * FROM chapter WHERE story_id = ${storyId} and level = ${level}`;
+    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} and level = ${level}`;
   return rows.map((row) => toChapterMO(row));
 }
 
@@ -60,9 +58,8 @@ export async function queryChapterByIdAndSid(
   storyId: number,
   Id: number,
 ): Promise<ChapterMO> {
-  const client = await db.connect();
   const { rows } =
-    await client.sql`SELECT * FROM chapter WHERE story_id = ${storyId} and id = ${Id}`;
+    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} and id = ${Id}`;
   if (rows.length === 0) {
     throw new CusEntityNotFoundError(
       ErrorCode.ChapterNotExistError,
@@ -105,12 +102,23 @@ export async function queryUploadStatistics(): Promise<UploadStatisticMO> {
   return toStatisticMO(rows[0]);
 }
 
-export async function creaeteChapter(chapter: ChapterMO): Promise<number> {
+export async function createChapter(chapter: ChapterMO): Promise<number> {
   try {
-    const client = await db.connect();
-    const { rows } =
-      await client.sql`INSERT INTO chapter (story_id, content, wallet_address, level, path, is_anonymous, parent_id, credential, created_at) VALUES (${chapter.story_id}, ${chapter.content}, ${chapter.wallet_address}, ${chapter.level}, ${JSON.stringify(chapter.path)}, ${chapter.is_anonymous}, ${chapter.parent_id}, ${chapter.credential}, ${chapter.created_at}) RETURNING id`;
-    return rows[0].id;
+    const text =
+      "INSERT INTO chapter (story_id, content, wallet_address, level, path, is_anonymous, parent_id, credential, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
+    const values = [
+      chapter.story_id,
+      chapter.content,
+      chapter.wallet_address,
+      chapter.level,
+      chapter.path,
+      chapter.is_anonymous,
+      chapter.parent_id,
+      chapter.credential,
+      chapter.created_at,
+    ];
+    const res = await sql.query(text, values);
+    return res.rows[0].id;
   } catch (err) {
     // return a 500 custom error
     console.error(err);

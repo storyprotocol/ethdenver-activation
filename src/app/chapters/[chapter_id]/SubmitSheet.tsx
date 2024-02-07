@@ -7,6 +7,11 @@ import FooterLogo from "@/components/pages/FooterLogo";
 import { CreateChapterRequest } from "@/interface/createChapterRequest";
 import { CreateChapterResponse } from "@/interface/createChapterResponse";
 import Spinner from "@/components/pages/Spinner";
+import { X } from "lucide-react";
+import NetworkErrorAlert from "@/components/pages/NetworkErrorAlert";
+import axios from "axios";
+import { ErrorResponse } from "@/interface/errorResponse";
+import { formatError } from "@/lib/fetcher";
 
 export default function SubmitSheet({
   open,
@@ -24,6 +29,8 @@ export default function SubmitSheet({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showWallet, setShowWallet] = useState(false);
+  const [error, setError] = useState<ErrorResponse | null>(null);
+  const [walletAddress, setWalletAddress] = useState("");
 
   useEffect(() => {
     if (!open) {
@@ -45,21 +52,29 @@ export default function SubmitSheet({
     };
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/chapters`, {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-      });
-      const result: CreateChapterResponse = await response.json();
-      setIsSubmitting(false);
-
-      if (response.ok) {
-        router.push(`/graph?highlight_id=${result.id}`);
-      } else {
-        console.error("Failed to create chapter", result);
-      }
+      const response = await axios.post<CreateChapterResponse>(
+        `/api/chapters`,
+        requestBody,
+      );
+      /**
+       * Redirect to the graph page need times when the network is slow
+       * So we didn't setIsSubmitting(false) to keep the loading spinner
+       */
+      router.push(`/graph?highlight_id=${response.data.id}`);
     } catch (e) {
       console.error("Failed to create chapter", e);
+      setIsSubmitting(false);
+      setError(formatError(e));
     }
+  };
+
+  const closeSheet = () => {
+    if (showWallet) {
+      setShowWallet(false);
+      return;
+    }
+
+    onOpenChange(false);
   };
 
   if (open && !storyId) {
@@ -68,21 +83,22 @@ export default function SubmitSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side={"bottom"} className={"h-full w-full bg-linear p-0"}>
+      <SheetContent
+        side={"bottom"}
+        className={"flex h-full w-full justify-center bg-linear p-0"}
+      >
         <div
-          className={
-            "absolute left-1/2 flex h-full w-full max-w-screen-sm -translate-x-1/2 flex-col px-4 pt-8"
-          }
+          className={"flex h-full w-full max-w-screen-sm flex-col px-4 pt-8"}
         >
           <div className={"text-5xl font-medium"}>Exquisite Story</div>
-
-          <div className={"fixed bottom-0 left-1/2 -translate-x-1/2"}></div>
 
           {isSubmitting && <Spinner />}
 
           {showWallet ? (
             <EnterWalletAddress
-              onSubmit={async (walletAddress) => {
+              walletAddress={walletAddress}
+              setWalletAddress={setWalletAddress}
+              onSubmit={async () => {
                 await submitNewChapter(chapterId, content, walletAddress);
               }}
             />
@@ -98,6 +114,26 @@ export default function SubmitSheet({
             />
           )}
           <FooterLogo />
+        </div>
+
+        {error && (
+          <div className={"fixed top-40 w-full"}>
+            <NetworkErrorAlert
+              error={error}
+              onRetry={async () => {
+                await submitNewChapter(chapterId, content, walletAddress);
+              }}
+              isValidating={isSubmitting}
+            />
+          </div>
+        )}
+
+        <div
+          onClick={closeSheet}
+          className="absolute right-0 top-0 cursor-pointer rounded-xl bg-white/0 p-4 hover:bg-white/30"
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
         </div>
       </SheetContent>
     </Sheet>

@@ -11,7 +11,7 @@ export default function SubmitMethodChoose({
 }) {
   return (
     <div className={"flex flex-1 flex-col justify-center"}>
-      <p className={"my-4"}>
+      <p className={"my-4 text-xl"}>
         Would you like credit for your addition?
         <br />
         <br />

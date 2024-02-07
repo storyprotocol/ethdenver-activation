@@ -43,15 +43,9 @@ export async function GET(
       parentDepth = lastChapter.path.length;
     }
 
+    let totalChapter: ChapterMO[] = [];
     if (parentDepth == 0) {
-      chapters.push({
-        id: lastChapter.id,
-        story_id: lastChapter.story_id,
-        content: lastChapter.content,
-        parent_id: 0,
-        path: lastChapter.path,
-        sibling_count: 1,
-      } as Chapter);
+      totalChapter.push(lastChapter);
     } else {
       const parentIds = lastChapter.path.slice(-parentDepth);
       let parentChapters = await queryChapterByIds(parentIds);
@@ -64,8 +58,10 @@ export async function GET(
         );
       }
       parentChapters.push(lastChapter);
-      chapters = await process(parentChapters);
+      totalChapter.push(...parentChapters);
     }
+
+    chapters = await process(totalChapter);
   } catch (err) {
     return errorHandler(err as Error);
   }
