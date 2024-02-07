@@ -13,7 +13,7 @@ export class ErrorResponse extends Error implements ErrorResponseInterface {
 export const fetcher = async (url: string) => {
   try {
     const res = await axios.get(url, {
-      timeout: 10000,
+      timeout: 16000,
     });
 
     return res.data;
