@@ -141,5 +141,5 @@ async function createIpAssetAndRelationship(
 
 const RelationshipType = {
   SrcChapter: "APPEARS_IN",
-  DstChapter: "REVIOUS_CHAPTER",
+  DstChapter: "PREVIOUS_CHAPTER",
 };
