@@ -11,7 +11,7 @@ export default async function Page({
   searchParams: { highlight_id: string };
 }) {
   return (
-    <main className="flex w-full flex-1 flex-col content-between px-4 pb-4 pt-8">
+    <main className="flex w-full max-w-screen-sm flex-1 flex-col content-between px-4 pb-4 pt-8">
       <div className="text-5xl font-medium text-white">Exquisite Story</div>
       <GraphChart
         className="my-4 grow"
