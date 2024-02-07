@@ -132,7 +132,7 @@ export default function SubmitSheet({
 
         <div
           onClick={closeSheet}
-          className="absolute right-0 top-0 cursor-pointer rounded-xl bg-white/0 p-4 hover:bg-white/30"
+          className="absolute right-0 top-0 cursor-pointer rounded-xl bg-white/0 p-4"
         >
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>

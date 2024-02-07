@@ -3,7 +3,7 @@ import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, temporaryRepairIosKeyboard } from "@/lib/utils";
 
 export default function NewChapterTextarea({
   isLoading,
@@ -39,6 +39,7 @@ export default function NewChapterTextarea({
           placeholder={"ie. And may the odds be ever in your favor."}
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
+          onBlur={() => temporaryRepairIosKeyboard()}
         />
         <div className={"absolute bottom-0 right-0 flex items-center"}>
           {maxLength && (
