@@ -23,6 +23,7 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
   >(`/api/chapters/${chapterId}/up`);
 
   const chapterListData = data?.chapters || [];
+  chapterListData.sort((a, b) => a.id - b.id);
   const storyId = chapterListData[0]?.story_id?.toString() || "";
 
   const onSubmit = (newContent: string) => {

@@ -30,7 +30,8 @@ export default function SubmitSheet({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showWallet, setShowWallet] = useState(false);
   const [error, setError] = useState<ErrorResponse | null>(null);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletOrEnsAddress, setWalletOrEnsAddress] = useState("");
+  const [realWalletAddress, setRealWalletAddress] = useState("");
 
   useEffect(() => {
     if (!open) {
@@ -96,10 +97,11 @@ export default function SubmitSheet({
 
           {showWallet ? (
             <EnterWalletAddress
-              walletAddress={walletAddress}
-              setWalletAddress={setWalletAddress}
+              walletOrEns={walletOrEnsAddress}
+              setWalletAddress={setWalletOrEnsAddress}
+              setRealWalletAddress={setRealWalletAddress}
               onSubmit={async () => {
-                await submitNewChapter(chapterId, content, walletAddress);
+                await submitNewChapter(chapterId, content, realWalletAddress);
               }}
             />
           ) : (
@@ -121,7 +123,7 @@ export default function SubmitSheet({
             <NetworkErrorAlert
               error={error}
               onRetry={async () => {
-                await submitNewChapter(chapterId, content, walletAddress);
+                await submitNewChapter(chapterId, content, realWalletAddress);
               }}
               isValidating={isSubmitting}
             />

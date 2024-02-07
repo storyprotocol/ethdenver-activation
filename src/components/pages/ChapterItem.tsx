@@ -30,7 +30,7 @@ export default function ChapterItem({
         </span>
       </div>
       <div className={cn("flex items-center", cardStyle ? "mt-2.5" : "mt-1")}>
-        <div className={"w-full flex-1 break-words text-xl"}>
+        <div className={"w-1 flex-1 break-words text-xl"}>
           {chapter.content}
         </div>
 

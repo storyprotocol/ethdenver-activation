@@ -31,8 +31,7 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^2.7.6",
-    "web3-validator": "^2.0.4"
+    "viem": "^2.7.6"
   },
   "devDependencies": {
     "@types/node": "^20",
