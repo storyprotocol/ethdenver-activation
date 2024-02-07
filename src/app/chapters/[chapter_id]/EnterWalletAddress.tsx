@@ -1,21 +1,66 @@
 import { Button } from "@/components/ui/button";
-import { isAddress } from "web3-validator";
 import Image from "next/image";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { createPublicClient, http, isAddress } from "viem";
+import { mainnet } from "viem/chains";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
+const client = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});
 
 export default function EnterWalletAddress({
-  walletAddress,
+  walletOrEns,
   setWalletAddress,
+  setRealWalletAddress,
   onSubmit,
 }: {
-  walletAddress: string;
+  walletOrEns: string;
   setWalletAddress: (walletAddress: string) => void;
+  setRealWalletAddress: (walletAddress: string) => void;
   onSubmit: () => void;
 }) {
   const [isValid, setIsValid] = useState(false);
-  const showValidation = !!walletAddress && !isValid;
+  const [isResolving, setIsResolving] = useState(false);
+
+  useEffect(() => {
+    let isCanceled = false;
+
+    async function getRealAddress(walletOrEnsAddress: string) {
+      if (walletOrEnsAddress.endsWith(".eth")) {
+        return await client.getEnsAddress({ name: walletOrEnsAddress });
+      } else {
+        return walletOrEnsAddress;
+      }
+    }
+
+    setIsResolving(true);
+    getRealAddress(walletOrEns).then(
+      (realAddress) => {
+        if (isCanceled) {
+          return;
+        }
+        setRealWalletAddress(realAddress as string);
+        setIsValid(isAddress(realAddress as string));
+        setIsResolving(false);
+      },
+      (e) => {
+        if (isCanceled) {
+          return;
+        }
+        setRealWalletAddress("");
+        setIsValid(false);
+        setIsResolving(false);
+      },
+    );
+
+    return () => {
+      isCanceled = true;
+    };
+  }, [setRealWalletAddress, walletOrEns]);
 
   return (
     <div className={"flex flex-1 flex-col justify-center"}>
@@ -35,20 +80,25 @@ export default function EnterWalletAddress({
             "placeholder:text-primary-foreground/30 focus-visible:outline-none",
           )}
           placeholder={"ie. 0x..."}
-          value={walletAddress}
+          value={walletOrEns}
           onChange={(e) => {
             setWalletAddress(e.target.value);
-            setIsValid(isAddress(e.target.value));
           }}
         />
         <div className={"absolute bottom-0 right-0 flex items-center"}>
-          {showValidation && (
-            <span className={"text-destructive"}>Enter a valid address</span>
+          {isResolving ? (
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin text-accent-foreground" />
+          ) : (
+            !!walletOrEns &&
+            !isValid && (
+              <span className={"text-destructive"}>Enter a valid address</span>
+            )
           )}
+
           <Button
             className={"select-none space-x-1"}
+            disabled={!isValid || isResolving}
             onClick={() => onSubmit()}
-            disabled={showValidation || !walletAddress}
           >
             <span>Submit</span>
             <Image

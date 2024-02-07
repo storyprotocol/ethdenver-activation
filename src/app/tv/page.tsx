@@ -1,18 +1,25 @@
 import GraphChart from "@/components/pages/GraphChart";
-import qrCodePic from "@/assets/tv/qr_code.svg";
-import Image from "../../../node_modules/next/image.d";
+import QRCode from "react-qr-code";
+import { envConfig } from "@/lib/envConfig";
 
 export default async function Page() {
   return (
     <main className="flex w-full flex-1 grow items-stretch justify-between">
-      <div className="flex flex-col pl-9 pt-9">
-        <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] whitespace-nowrap text-[56px] font-medium">
-          Continue the story at
+      <div className="relative flex w-[430px] flex-col pl-9 pt-9">
+        <div className="absolute z-40">
+          <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] whitespace-nowrap text-[56px] font-medium">
+            Continue the story at
+          </div>
+          <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] mb-10 whitespace-nowrap text-[56px] font-medium">
+            exquisitestory.xyz
+          </div>
+          <QRCode
+            size={200}
+            value={envConfig.QR_CODE_TV || " "}
+            fgColor="#FFFFFF"
+            bgColor="transparent"
+          />
         </div>
-        <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] whitespace-nowrap text-[56px] font-medium">
-          exquisitestory.xyz
-        </div>
-        <Image className="mt-10" src={qrCodePic} alt={"Blank Icon"} />
       </div>
       <GraphChart className="w-6/12 min-w-px grow" isTv />
     </main>
