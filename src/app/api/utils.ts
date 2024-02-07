@@ -1,3 +1,5 @@
+import exp from "constants";
+
 function GetEnv(name: string) {
   return process.env[name] || "";
 }
@@ -12,3 +14,11 @@ const EnvKey = {
 };
 
 export { EnvKey, GetEnv };
+
+export function getUUID(): string {
+  return crypto.randomUUID();
+}
+
+export function getTimestamp(): number {
+  return new Date().getTime();
+}
