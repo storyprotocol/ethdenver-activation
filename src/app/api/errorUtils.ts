@@ -57,11 +57,11 @@ function http400Error(code: string, msg?: string): Response {
   );
 }
 
-function http500Error(code: string): Response {
+function http500Error(code: string, msg?: string): Response {
   return NextResponse.json(
     {
       code,
-      message: "internal error",
+      message: "internal error->" + (msg ? `: ${msg}` : "[N/A]"),
     },
     { status: 500 },
   );
@@ -89,6 +89,12 @@ const ErrorCode = {
   StoryIDTypeError: "Story_ID_Type_Error",
   ChapterContentRequiredError: "Chapter_Content_Required_Error",
   WalletAddressTypeError: "Wallet_Address_Type_Error",
+
+  StoryNotExistError: "Story_Not_Exist",
+  StoryIdUniqueError: "Story_ID_Unique_Error",
+
+  IPAssetCreateError: "IP_Asset_Create_Error",
+  RelationshipCreateError: "Relationship_Create_Error",
 };
 
 function errorHandler(err: Error): Response {

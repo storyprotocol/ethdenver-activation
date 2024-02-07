@@ -143,6 +143,49 @@ export async function updateAsset(asset: AssetMO) {
   }
 }
 
+export async function queryStoryCredential(storyId: number): Promise<string> {
+  const { rows } =
+    await sql`SELECT credential FROM story WHERE id = ${storyId}`;
+  if (rows.length === 0) {
+    throw new CusEntityNotFoundError(
+      ErrorCode.StoryNotExistError,
+      `Story ${storyId} not found`,
+    );
+  }
+
+  if (rows.length > 1) {
+    throw new CusEntityNotUniqueError(
+      ErrorCode.StoryIdUniqueError,
+      `Story ${storyId} has more than one record`,
+    );
+  }
+  return rows[0].credential;
+}
+
+export async function createIpAsset(ipAsset: IpAssetVO): Promise<void> {
+  try {
+    const text =
+      "INSERT INTO ip_asset (credential, name, type, description, belong_to, status, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+    const values = [
+      ipAsset.credential,
+      ipAsset.name,
+      ipAsset.type,
+      ipAsset.description,
+      ipAsset.belong_to,
+      ipAsset.status,
+      ipAsset.created_at,
+    ];
+    await sql.query(text, values);
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.IPAssetCreateError,
+      `Failed to create ip_asset: ${err}`,
+    );
+  }
+}
+
 export async function updateRelationship(relationship: RelationshipMO) {
   try {
     const client = await db.connect();
@@ -167,6 +210,43 @@ export async function updateUploadStatistics(statistics: UploadStatisticMO) {
     throw new CusDBError(
       ErrorCode.UpdateStatisticError,
       `Failed to update upload statistics: ${err}`,
+    );
+  }
+}
+export async function createRelationships(
+  relationships: RelationshipVO[],
+): Promise<void> {
+  if (relationships.length === 0) {
+    return;
+  }
+  try {
+    let text =
+      "INSERT INTO relationship (relationship_type, src_asset_id, dst_asset_id, status, created_at) VALUES ($1, $2, $3, $4, $5)";
+    let values = [
+      relationships[0].relationship_type,
+      relationships[0].src_asset_id,
+      relationships[0].dst_asset_id,
+      relationships[0].status,
+      relationships[0].created_at,
+    ];
+    if ((relationships.length = 2)) {
+      text = text + ",($6, $7, $8, $9, $10)";
+      values = values.concat([
+        relationships[1].relationship_type,
+        relationships[1].src_asset_id,
+        relationships[1].dst_asset_id,
+        relationships[1].status,
+        relationships[1].created_at,
+      ]);
+    }
+
+    await sql.query(text, values);
+  } catch (err) {
+    // return a 500 custom error
+    console.error(err);
+    throw new CusDBError(
+      ErrorCode.RelationshipCreateError,
+      `Failed to create relationship: ${err}`,
     );
   }
 }
@@ -260,4 +340,21 @@ export interface UploadStatisticMO {
   storyUploaded: number;
   chapterUploaded: number;
   relationshipUploaded: number;
+}
+
+export interface IpAssetVO {
+  credential: string;
+  name: string;
+  type: number;
+  description: string;
+  belong_to: string;
+  status: number;
+  created_at: number;
+}
+export interface RelationshipVO {
+  relationship_type: string;
+  src_asset_id: string;
+  dst_asset_id: string;
+  status: number;
+  created_at: number;
 }
