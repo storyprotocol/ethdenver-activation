@@ -77,9 +77,21 @@ export async function queryChapterByIdAndSid(
 
 export async function createChapter(chapter: ChapterMO): Promise<number> {
   try {
-    const { rows } =
-      await sql`INSERT INTO chapter (story_id, content, wallet_address, level, path, is_anonymous, parent_id, credential, created_at) VALUES (${chapter.story_id}, ${chapter.content}, ${chapter.wallet_address}, ${chapter.level}, ${JSON.stringify(chapter.path)}, ${chapter.is_anonymous}, ${chapter.parent_id}, ${chapter.credential}, ${chapter.created_at}) RETURNING id`;
-    return rows[0].id;
+    const text =
+      "INSERT INTO chapter (story_id, content, wallet_address, level, path, is_anonymous, parent_id, credential, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
+    const values = [
+      chapter.story_id,
+      chapter.content,
+      chapter.wallet_address,
+      chapter.level,
+      chapter.path,
+      chapter.is_anonymous,
+      chapter.parent_id,
+      chapter.credential,
+      chapter.created_at,
+    ];
+    const res = await sql.query(text, values);
+    return res.rows[0].id;
   } catch (err) {
     // return a 500 custom error
     console.error(err);
