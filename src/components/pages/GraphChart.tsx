@@ -155,9 +155,7 @@ export default function GraphChart(props: GraphChartProps) {
               show: false,
             },
             lineStyle: {
-              width: 2,
-              color: "#fff",
-              opacity: 0.3,
+              opacity: 0.8,
             },
             data: chartData.nodes.map(function (node: any) {
               node.cursor = "default";
