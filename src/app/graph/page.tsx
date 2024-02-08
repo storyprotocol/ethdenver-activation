@@ -4,6 +4,7 @@ import arrowRightBlackPic from "@/assets/common/arrow_right_black.svg";
 import shareIconPic from "@/assets/common/share_icon.svg";
 import Image from "../../../node_modules/next/image.d";
 import GraphChart from "@/components/pages/GraphChart";
+import { envConfig } from "@/lib/envConfig";
 
 export default async function Page({
   searchParams,
@@ -35,10 +36,10 @@ export default async function Page({
       </Button>
       {searchParams.highlight_id ? (
         <Button asChild className="mb-24 mt-4">
-          <Link href="/chapters">
+          <a className="flex" target="_blank" href={envConfig.QR_CODE_TV || ""}>
             Learn About Story Protocol{" "}
             <Image className="ml-2.5" src={shareIconPic} alt={"Blank Icon"} />
-          </Link>
+          </a>
         </Button>
       ) : (
         <></>
