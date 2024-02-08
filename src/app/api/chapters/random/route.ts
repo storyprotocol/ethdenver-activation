@@ -43,7 +43,7 @@ function verify(value: string | null): number {
   let count =
     value ||
     GetEnv(EnvKey.ChapterRandomMinCount) ||
-    CfgDefaultValue.ChapterRandomMinValue;
+    CfgDefaultValue.ChapterRandomMinCount;
   if (isNaN(Number(count))) {
     throw new CusTypeError(
       ErrorCode.ChapterRandomQueryVarError,
@@ -53,7 +53,7 @@ function verify(value: string | null): number {
 
   let defaultMaxMum =
     GetEnv(EnvKey.ChapterRandomMaxCount) ||
-    CfgDefaultValue.ChapterRandomMaxValue;
+    CfgDefaultValue.ChapterRandomMaxCount;
   if (isNaN(Number(defaultMaxMum))) {
     throw new CusEnvVarsConfigError(
       ErrorCode.ChapterRandomQueryVarError,

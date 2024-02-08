@@ -37,9 +37,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Environment Variable
 
+You can find all environment variables in the file **".env.example"**.
+
 ### Server Side env variables
 
 For API service:
+
+- **POSTGRES_URL** :
+- **POSTGRES_PRISMA_URL** :
+- **POSTGRES_URL_NON_POOLING** :
 
 - **API_CHAPTER_RANDOM_MIN_COUNT** : Return the min count chapters info, default is 3 in the code
 - **API_CHAPTER_RANDOM_MAX_COUNT** : Setup the max count chapters info,default is 10 in the code
@@ -83,7 +89,7 @@ Note:
 
 ## Database
 
-### Table Schema
+### Table Define
 
 ```sql
 -- public.story definition
@@ -155,7 +161,11 @@ CREATE TABLE public.upload_data_statistics (
 );
 ```
 
-### Test data
+### Test Data
+
+---
+
+#### 1. Story and chapter
 
 ```sql
 -- 10 stories
@@ -225,4 +235,49 @@ INSERT INTO public.chapter
 VALUES(10, 10, 'I''m a speaker of story 10', '0x95CCD7B2795894C57075F878C2993953F51EB734', 1, '{}', true, 0, '9d1e8408-94da-4b89-af91-9f2eb88918f5'::uuid, 1707035242000);
 
 SELECT setval('public.chapter_id_seq', (SELECT MAX(id) FROM public.chapter));
+```
+
+---
+
+#### 2. IP Asset and Relationship data for the initial story and chapter
+
+```sql
+-- For story
+INSERT INTO public.ip_asset (credential,"name","type",description,belong_to,status,created_at) VALUES
+	 ('bb04fb60-e2b4-4fc0-abaf-0787494ee7a6','test story 1',0,'','',0,1707035242),
+	 ('dcd83ac9-5d02-40ce-bcfb-c29a7a308ee4','test story 2',0,'','',0,1707035242),
+	 ('9a90f193-a2f4-457e-ae71-33f0f47e1971','test story 3',0,'','',0,1707035242),
+	 ('0dbe3ed3-0b62-4ab7-a44c-7f39568c9122','test story 4',0,'','',0,1707035242),
+	 ('81a561bf-b4cd-408a-8ea1-4b812d4e5736','test story 5',0,'','',0,1707035242),
+	 ('4fff6995-73b5-491d-8583-165ab7aa8258','test story 6',0,'','',0,1707035242),
+	 ('810b7da3-b94b-4eed-bca1-13fc8cc29906','test story 7',0,'','',0,1707035242),
+	 ('1b10afe2-b701-4519-8529-927e5d065e85','test story 8',0,'','',0,1707035242),
+	 ('e894528f-30f3-4a80-8dae-320a080247ef','test story 9',0,'','',0,1707035242),
+	 ('ec4c891d-5f56-45bd-9485-575137c5a730','test story 10',0,'','',0,1707035242);
+
+-- For chapter
+INSERT INTO public.ip_asset (credential,"name","type",description,belong_to,status,created_at) VALUES
+	 ('a22259f5-2d19-4132-a521-53b9f87fde55','s1_c1',1,'I''m a speaker of story 1','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('8a6a49a9-5a19-4ec5-a98b-c1f04e7b6e7f','s2_c2',1,'I''m a speaker of story 2','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('de508061-1a26-414a-880f-dd3873f2e458','s3_c3',1,'I''m a speaker of story 3','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('7f572aba-cf65-4eeb-9341-673cef0623a0','s4_c4',1,'I''m a speaker of story 4','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('8d734bcb-fb0d-4121-b063-3c201abf3ac5','s5_c5',1,'I''m a speaker of story 5','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('f90b3835-f7fb-44c0-9abe-cdd396d019b2','s6_c6',1,'I''m a speaker of story 6','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('89c3677e-b187-4bb1-acfb-8b8183bed7f7','s7_c7',1,'I''m a speaker of story 7','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('ee2ebc6e-569b-4ec2-999a-bdb51946f231','s8_c8',1,'I''m a speaker of story 8','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('ee7b7310-e723-4cc8-b8ac-4cb30ee17464','s9_c9',1,'I''m a speaker of story 9','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242),
+	 ('9d1e8408-94da-4b89-af91-9f2eb88918f5','s10_c10',1,'I''m a speaker of story 10','0x95CCD7B2795894C57075F878C2993953F51EB734',0,1707035242);
+
+-- For chapter
+INSERT INTO public.relationship(relationship_type,src_asset_id,dst_asset_id,status,created_at) VALUES
+	 ('APPEARS_IN','a22259f5-2d19-4132-a521-53b9f87fde55','bb04fb60-e2b4-4fc0-abaf-0787494ee7a6',0,1707035242),
+	 ('APPEARS_IN','8a6a49a9-5a19-4ec5-a98b-c1f04e7b6e7f','dcd83ac9-5d02-40ce-bcfb-c29a7a308ee4',0,1707035242),
+	 ('APPEARS_IN','de508061-1a26-414a-880f-dd3873f2e458','9a90f193-a2f4-457e-ae71-33f0f47e1971',0,1707035242),
+	 ('APPEARS_IN','7f572aba-cf65-4eeb-9341-673cef0623a0','0dbe3ed3-0b62-4ab7-a44c-7f39568c9122',0,1707035242),
+	 ('APPEARS_IN','8d734bcb-fb0d-4121-b063-3c201abf3ac5','81a561bf-b4cd-408a-8ea1-4b812d4e5736',0,1707035242),
+	 ('APPEARS_IN','f90b3835-f7fb-44c0-9abe-cdd396d019b2','4fff6995-73b5-491d-8583-165ab7aa8258',0,1707035242),
+	 ('APPEARS_IN','89c3677e-b187-4bb1-acfb-8b8183bed7f7','810b7da3-b94b-4eed-bca1-13fc8cc29906',0,1707035242),
+	 ('APPEARS_IN','ee2ebc6e-569b-4ec2-999a-bdb51946f231','1b10afe2-b701-4519-8529-927e5d065e85',0,1707035242),
+	 ('APPEARS_IN','ee7b7310-e723-4cc8-b8ac-4cb30ee17464','e894528f-30f3-4a80-8dae-320a080247ef',0,1707035242),
+	 ('APPEARS_IN','9d1e8408-94da-4b89-af91-9f2eb88918f5','ec4c891d-5f56-45bd-9485-575137c5a730',0,1707035242);
 ```

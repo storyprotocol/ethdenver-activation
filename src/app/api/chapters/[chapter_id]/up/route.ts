@@ -70,7 +70,7 @@ export async function GET(
 }
 
 function verifyDepth(value: string | null): number {
-  let depth = value || CfgDefaultValue.ChapterUpDepthMinValue;
+  let depth = value || CfgDefaultValue.ChapterUpDepthMinCount;
   if (isNaN(Number(depth))) {
     throw new CusTypeError(
       ErrorCode.ChapterUpDepthTypeError,
@@ -80,7 +80,7 @@ function verifyDepth(value: string | null): number {
 
   const maxDepth =
     GetEnv(EnvKey.ChapterUpWithSelfMaxDepth) ||
-    CfgDefaultValue.ChapterUpDepthMaxValue;
+    CfgDefaultValue.ChapterUpDepthMaxCount;
   if (isNaN(Number(maxDepth))) {
     throw new CusEnvVarsConfigError(
       ErrorCode.ChapterUpDepthMaxError,
