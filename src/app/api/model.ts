@@ -45,7 +45,7 @@ export async function queryChapterByIds(
   return res.rows.map((row) => toChapterMO(row));
 }
 
-export async function queryChapterSilding(
+export async function queryChapterSiblingNodes(
   storyId: number,
   level: number,
 ): Promise<ChapterMO[]> {

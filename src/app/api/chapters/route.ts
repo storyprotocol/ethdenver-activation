@@ -86,7 +86,7 @@ export async function POST(request: NextRequest): Promise<Response> {
     const id = await createChapter(newChapter);
     newChapter.id = id;
 
-    // Insert some reqiured data to ip asset relationship table
+    // Insert some required data to ip asset relationship table
     await createIpAssetAndRelationship(newChapter, parentChapter);
 
     const response: CreateChapterResponse = {
@@ -105,7 +105,7 @@ async function createIpAssetAndRelationship(
   newChapter: ChapterMO,
   parentChapter: ChapterMO,
 ) {
-  // Insert some reqiured data to ip asset relationship table
+  // Insert some required data to ip asset relationship table
   let newIPAsset = {
     credential: getUUID(),
     name: "s" + newChapter.story_id + "_c" + newChapter.id,
