@@ -27,8 +27,6 @@ export default function EnterWalletAddress({
   const [isResolving, setIsResolving] = useState(false);
   const walletAddressRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     let isCanceled = false;
 
