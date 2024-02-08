@@ -22,14 +22,14 @@ export default function SubmitMethodChoose({
         <Button
           onClick={toAnonymously}
           disabled={isSubmitting}
-          className={"h-auto whitespace-normal"}
+          className={"h-auto whitespace-normal shadow-2xl"}
         >
           Contribute Anonymously
         </Button>
         <Button
           onClick={toWallet}
           disabled={isSubmitting}
-          className={"h-auto whitespace-normal"}
+          className={"h-auto whitespace-normal shadow-2xl"}
         >
           Attribute to Your Wallet
         </Button>

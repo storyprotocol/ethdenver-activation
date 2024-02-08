@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn, temporaryRepairIosKeyboard } from "@/lib/utils";
 import { createPublicClient, http, isAddress } from "viem";
 import { mainnet } from "viem/chains";
@@ -25,6 +25,9 @@ export default function EnterWalletAddress({
 }) {
   const [isValid, setIsValid] = useState(false);
   const [isResolving, setIsResolving] = useState(false);
+  const walletAddressRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     let isCanceled = false;
@@ -71,17 +74,23 @@ export default function EnterWalletAddress({
 
       <div className={"relative mt-4"}>
         <label className={"mb-1 text-xl font-medium"} htmlFor={"walletAddress"}>
-          Wallet Address
+          Wallet Address or ENS
         </label>
-        <input
+        <textarea
+          ref={walletAddressRef}
           id={"walletAddress"}
           className={cn(
             "block w-full rounded-md p-4 pb-12 pt-6 text-xl text-primary-foreground",
             "placeholder:text-primary-foreground/30 focus-visible:outline-none",
+            "drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] shadow-2xl",
           )}
-          placeholder={"ie. 0x..."}
+          placeholder={"ie. 0x... or ENS"}
           value={walletOrEns}
           onChange={(e) => {
+            const current = walletAddressRef.current;
+            if (current) {
+              current.scrollTop = current?.scrollHeight || 0;
+            }
             setWalletAddress(e.target.value);
           }}
           onBlur={() => temporaryRepairIosKeyboard()}

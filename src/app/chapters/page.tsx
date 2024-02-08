@@ -45,7 +45,7 @@ export default function Page() {
 
         <div className={"w-full p-4 text-center"}>
           <Button
-            className={"mx-auto"}
+            className={"mx-auto shadow-2xl"}
             disabled={isValidating}
             onClick={() => mutate()}
           >

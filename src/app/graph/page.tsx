@@ -18,7 +18,7 @@ export default async function Page({
         className="my-4 grow"
         highlightId={searchParams.highlight_id}
       />
-      <Button asChild>
+      <Button asChild className="shadow-2xl">
         <Link href="/chapters">
           {searchParams.highlight_id ? (
             <>Continue Another Story</>
@@ -35,7 +35,7 @@ export default async function Page({
         </Link>
       </Button>
       {searchParams.highlight_id ? (
-        <Button asChild className="mb-24 mt-4">
+        <Button asChild className="mb-24 mt-4 shadow-2xl">
           <a className="flex" target="_blank" href={envConfig.QR_CODE_TV || ""}>
             Learn About Story Protocol{" "}
             <Image className="ml-2.5" src={shareIconPic} alt={"Blank Icon"} />
