@@ -23,7 +23,7 @@ const acronymFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Exquisite Story",
+  title: "Onchain Chronicles",
   description: "A collective storytelling journey.",
 };
 

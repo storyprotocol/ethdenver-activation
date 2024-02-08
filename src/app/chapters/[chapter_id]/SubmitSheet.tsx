@@ -91,7 +91,7 @@ export default function SubmitSheet({
         <div
           className={"flex h-full w-full max-w-screen-sm flex-col px-4 pt-8"}
         >
-          <div className={"text-5xl font-medium"}>Exquisite Story</div>
+          <div className={"text-5xl font-medium"}>Onchain Chronicles</div>
 
           {isSubmitting && <Spinner />}
 
