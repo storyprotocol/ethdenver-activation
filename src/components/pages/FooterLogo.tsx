@@ -14,7 +14,7 @@ export default function FooterLogo() {
       {pathname === "/tv" ? (
         <></>
       ) : (
-        <div className={"py-4"} onClick={toStoryprotocol}>
+        <div className={"cursor-pointer py-4"} onClick={toStoryprotocol}>
           <Image className={"mx-auto"} src={footerLogoPic} alt={"logo"} />
         </div>
       )}
