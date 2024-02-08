@@ -1,3 +1,4 @@
 export const envConfig = {
   QR_CODE_TV: process.env.NEXT_PUBLIC_QR_CODE_TV,
+  LEARN_STORY_PROTOCOL_LINK: process.env.NEXT_PUBLIC_LEARN_STORY_PROTOCOL_LINK,
 };
