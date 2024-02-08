@@ -4,12 +4,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { init, EChartsType } from "echarts";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import Spinner from "./Spinner";
-import axios from "axios";
+import axios, { all } from "axios";
 import {
   ChapterRelationshipResponse,
   ChapterRelationship,
 } from "@/interface/chapterRelationShipResponse";
-import youAreHerePic from "@/assets/chapter/you_are_here.png";
 
 interface GraphChartProps {
   className?: string;
@@ -147,27 +146,37 @@ export default function GraphChart(props: GraphChartProps) {
             layout: "force",
             animation: true,
             draggable: false,
+            roam: true,
+            scaleLimit: {
+              min: 0.5,
+              max: 3,
+            },
             label: {
               show: false,
             },
+            lineStyle: {
+              width: 2,
+              color: "#fff",
+              opacity: 0.3,
+            },
             data: chartData.nodes.map(function (node: any) {
-              node.legendHoverLink = false;
               node.cursor = "default";
               if (String(node.id) === highlightId) {
-                node.symbolSize = 20;
+                node.itemStyle = {
+                  borderCap: "round",
+                  borderWidth: 3,
+                  borderColor: "#fff",
+                };
                 node.label = {
                   show: true,
-                  formatter: "{a|}",
-                  position: "top",
-                  padding: [0, 0, -8, 90],
+                  formatter: "{a|You}",
+                  position: "right",
+                  padding: [0, 0, 0, 0],
                   rich: {
                     a: {
-                      width: 80,
-                      height: 80,
-                      align: "top",
-                      backgroundColor: {
-                        image: youAreHerePic.src,
-                      },
+                      color: "#fff",
+                      fontSize: "24px",
+                      fontWeight: "bold",
                     },
                   },
                 };
