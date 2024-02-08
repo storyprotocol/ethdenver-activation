@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import TextareaAutosize from "react-textarea-autosize";
 import Image from "next/image";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
 import { useEffect, useRef, useState } from "react";
@@ -74,13 +75,13 @@ export default function EnterWalletAddress({
         <label className={"mb-1 text-xl font-medium"} htmlFor={"walletAddress"}>
           Wallet Address or ENS
         </label>
-        <textarea
+        <TextareaAutosize
           ref={walletAddressRef}
           id={"walletAddress"}
           className={cn(
             "block w-full rounded-md p-4 pb-12 pt-6 text-xl text-primary-foreground",
             "placeholder:text-primary-foreground/30 focus-visible:outline-none",
-            "drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] shadow-2xl",
+            "min-h-0 shadow-2xl transition-all focus:min-h-20 group-hover:min-h-20",
           )}
           placeholder={"ie. 0x... or ENS"}
           value={walletOrEns}
