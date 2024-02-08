@@ -107,7 +107,7 @@ async function createIpAssetAndRelationship(
 ) {
   // Insert some required data to ip asset relationship table
   let newIPAsset = {
-    credential: getUUID(),
+    credential: newChapter.credential,
     name: "s" + newChapter.story_id + "_c" + newChapter.id,
     type: 1,
     status: 0,
