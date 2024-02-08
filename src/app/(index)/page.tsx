@@ -11,13 +11,13 @@ export default function Page() {
       }
     >
       <div>
-        <h1 className="text-5xl font-medium">Exquisite Story</h1>
+        <h1 className="text-5xl font-medium">Onchain Chronicles</h1>
         <div className={"mt-4 text-xl"}>
           A collective storytelling journey.
           <br />
           <br />
-          With Exquisite Story, you continue the story and shape how the story
-          is told paragraph by paragraph.
+          With Onchain Chronicles, you continue the story and shape how the
+          story is told paragraph by paragraph.
           <br />
           <br />
           Once you tell your story, you can mint a commemorative Story Protocol

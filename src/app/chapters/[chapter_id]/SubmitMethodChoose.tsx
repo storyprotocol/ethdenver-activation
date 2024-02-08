@@ -18,7 +18,7 @@ export default function SubmitMethodChoose({
         In addition getting attribution for your addition, we’ll airdrop you a
         commemorative NFT for participating.
       </p>
-      <div className={"my-4 grid grid-cols-2 gap-4"}>
+      <div className={"my-4 grid"}>
         <Button
           onClick={toAnonymously}
           disabled={isSubmitting}
@@ -26,6 +26,8 @@ export default function SubmitMethodChoose({
         >
           Contribute Anonymously
         </Button>
+      </div>
+      <div className={"grid"}>
         <Button
           onClick={toWallet}
           disabled={isSubmitting}

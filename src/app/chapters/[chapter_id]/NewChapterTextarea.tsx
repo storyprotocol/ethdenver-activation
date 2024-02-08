@@ -53,7 +53,7 @@ export default function NewChapterTextarea({
             </span>
           )}
           <Button
-            className={"select-none space-x-1 opacity-30"}
+            className={"select-none space-x-1"}
             onClick={() => onSubmit(newContent)}
             disabled={!length || isLoading || isOverLimit}
           >
