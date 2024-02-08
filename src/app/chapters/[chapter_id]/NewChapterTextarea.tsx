@@ -34,7 +34,7 @@ export default function NewChapterTextarea({
           className={cn(
             "block w-full rounded-md p-4 pb-12 pt-6 text-xl text-primary-foreground",
             "placeholder:text-primary-foreground/30 focus-visible:outline-none",
-            "min-h-0 transition-all focus:min-h-40 group-hover:min-h-40",
+            "min-h-0 shadow-2xl transition-all focus:min-h-40 group-hover:min-h-40",
           )}
           placeholder={"ie. And may the odds be ever in your favor."}
           value={newContent}
@@ -53,7 +53,7 @@ export default function NewChapterTextarea({
             </span>
           )}
           <Button
-            className={"select-none space-x-1"}
+            className={"select-none space-x-1 opacity-30"}
             onClick={() => onSubmit(newContent)}
             disabled={!length || isLoading || isOverLimit}
           >

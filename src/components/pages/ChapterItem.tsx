@@ -20,7 +20,7 @@ export default function ChapterItem({
     <div
       className={cn(
         "mt-4",
-        cardStyle && " rounded-2xl bg-[#AA2627]/70 p-6 pr-4",
+        cardStyle && " rounded-2xl bg-[#AA2627]/70 p-6 pr-4 shadow-2xl",
       )}
     >
       <div className={"flex items-center opacity-50"}>

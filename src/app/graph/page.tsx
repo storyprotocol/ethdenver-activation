@@ -18,7 +18,7 @@ export default async function Page({
         className="my-4 grow"
         highlightId={searchParams.highlight_id}
       />
-      <Button asChild>
+      <Button asChild className="shadow-2xl">
         <Link href="/chapters">
           {searchParams.highlight_id ? (
             <>Continue Another Story</>
