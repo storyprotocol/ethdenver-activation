@@ -6,7 +6,7 @@ export default async function Page() {
   const getHostname = (url: string) => {
     try {
       const urlObj = new URL(url);
-      return urlObj.hostname;
+      return `${urlObj.hostname}${urlObj.pathname}`;
     } catch {
       return "";
     }
