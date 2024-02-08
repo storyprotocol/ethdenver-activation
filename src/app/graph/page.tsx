@@ -35,8 +35,12 @@ export default async function Page({
         </Link>
       </Button>
       {searchParams.highlight_id ? (
-        <Button asChild className="mb-24 mt-4 shadow-2xl">
-          <a className="flex" target="_blank" href={envConfig.QR_CODE_TV || ""}>
+        <Button asChild className="mb-24 mt-4">
+          <a
+            className="flex"
+            target="_blank"
+            href={envConfig.LEARN_STORY_PROTOCOL_LINK || ""}
+          >
             Learn About Story Protocol{" "}
             <Image className="ml-2.5" src={shareIconPic} alt={"Blank Icon"} />
           </a>
