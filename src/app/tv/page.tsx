@@ -3,6 +3,14 @@ import QRCode from "react-qr-code";
 import { envConfig } from "@/lib/envConfig";
 
 export default async function Page() {
+  const getHostname = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.hostname;
+    } catch {
+      return "";
+    }
+  };
   return (
     <main className="flex w-full flex-1 grow items-stretch justify-between">
       <div className="relative flex w-[430px] flex-col pl-9 pt-9">
@@ -11,7 +19,7 @@ export default async function Page() {
             Continue the story at
           </div>
           <div className="drop-shadow-[0_0_32px_rgba(0, 0,	0, 0.25)] mb-10 whitespace-nowrap text-[56px] font-medium">
-            exquisitestory.xyz
+            {getHostname(envConfig.QR_CODE_TV || "")}
           </div>
           {envConfig.QR_CODE_TV ? (
             <QRCode
