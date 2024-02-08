@@ -10,7 +10,7 @@ import {
   ChapterMO,
   queryChapterById,
   queryChapterByIds,
-  queryChapterSilding,
+  queryChapterSiblingNodes,
 } from "@/app/api/model";
 import { EnvKey, GetEnv } from "@/app/api/utils";
 import { Chapter } from "@/interface/chapter";
@@ -102,7 +102,10 @@ async function process(chapters: ChapterMO[]): Promise<Chapter[]> {
   let result: Chapter[] = [];
   for (let i = 0; i < chapters.length; i++) {
     let chapter = chapters[i];
-    const sliding = await queryChapterSilding(chapter.story_id, chapter.level);
+    const sliding = await queryChapterSiblingNodes(
+      chapter.story_id,
+      chapter.level,
+    );
     result.push({
       id: chapter.id,
       story_id: chapter.story_id,
