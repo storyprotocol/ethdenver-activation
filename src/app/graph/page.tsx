@@ -4,6 +4,7 @@ import arrowRightBlackPic from "@/assets/common/arrow_right_black.svg";
 import shareIconPic from "@/assets/common/share_icon.svg";
 import Image from "../../../node_modules/next/image.d";
 import GraphChart from "@/components/pages/GraphChart";
+import GraphChapters from "./GraphChapters";
 import { envConfig } from "@/lib/envConfig";
 
 export default async function Page({
@@ -11,16 +12,19 @@ export default async function Page({
 }: {
   searchParams: { highlight_id: string };
 }) {
+  const highlightId = searchParams?.highlight_id;
+
   return (
     <main className="flex w-full max-w-screen-sm flex-1 flex-col content-between px-4 pb-4 pt-8">
       <div className="text-5xl font-medium text-white">Onchain Chronicles</div>
       <GraphChart
-        className="my-4 grow"
-        highlightId={searchParams.highlight_id}
+        className={`my-4 grow ${highlightId ? "min-h-[500px]" : ""}`}
+        highlightId={highlightId}
       />
+      <GraphChapters chapterId={highlightId} className="mb-4" />
       <Button asChild className="shadow-2xl">
         <Link href="/chapters">
-          {searchParams.highlight_id ? (
+          {highlightId ? (
             <>Continue Another Story</>
           ) : (
             <>
@@ -34,8 +38,8 @@ export default async function Page({
           )}
         </Link>
       </Button>
-      {searchParams.highlight_id ? (
-        <Button asChild className="mb-24 mt-4">
+      {highlightId ? (
+        <Button asChild className="mb-12 mt-4">
           <a
             className="flex"
             target="_blank"

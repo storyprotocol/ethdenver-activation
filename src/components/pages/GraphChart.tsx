@@ -25,6 +25,7 @@ export default function GraphChart(props: GraphChartProps) {
     edgeLength: [10, 50],
     repulsion: 20,
     gravity: 0.3,
+    zoom: 1,
   });
   const domRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsType>();
@@ -108,25 +109,43 @@ export default function GraphChart(props: GraphChartProps) {
     };
   };
 
+  const getGravity = useCallback((dataLength: number) => {
+    return {
+      gravity: Math.min(Number((dataLength / 2000).toFixed(1)) || 0.2, 0.4),
+      edgeLength: [
+        10,
+        Math.max(Number((40 - Math.ceil(dataLength / 200) * 8).toFixed(0)), 25),
+      ],
+      repulsion: Math.max(
+        Number((40 - Math.ceil(dataLength / 200) * 8).toFixed(0)),
+        25,
+      ),
+      zoom: Math.max(Number((1 - dataLength / 10000).toFixed(1)), 0.5),
+    };
+  }, []);
+
   useEffect(() => {
     if (isSmallDevice) {
       setForceOpt({
         edgeLength: [10, 20],
         repulsion: 20,
         gravity: 0.4,
+        zoom: 1,
       });
     }
-  }, [isSmallDevice]);
+  }, [isSmallDevice, allData.length]);
 
   useEffect(() => {
     if (isMediumDevice) {
+      const opt = getGravity(allData.length);
       setForceOpt({
-        edgeLength: [10, 20],
-        repulsion: 20,
-        gravity: 0.3,
+        edgeLength: opt.edgeLength,
+        repulsion: opt.repulsion,
+        gravity: opt.gravity,
+        zoom: opt.zoom,
       });
     }
-  }, [isMediumDevice]);
+  }, [allData.length, isMediumDevice, getGravity]);
 
   useEffect(() => {
     if (domRef && domRef.current && allData) {
@@ -147,6 +166,7 @@ export default function GraphChart(props: GraphChartProps) {
             animation: true,
             draggable: false,
             roam: true,
+            zoom: !isTv ? forceOpt.zoom : 1,
             scaleLimit: {
               min: 0.5,
               max: 3,
