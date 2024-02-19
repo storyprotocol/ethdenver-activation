@@ -53,6 +53,8 @@ For API service:
 - **API_CHAPTER_RELATIONSHIP_MAX_LIMIT** : Return limite count chapters mode info, default is 10000
 - **API_DEFAULT_WALLET_ADDRESS** ：Setup the default wallet address
 
+- **METADATA_BASE**: is a convenience option to set a base URL prefix for metadata fields that require a fully qualified URL. [Detail](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase)
+
 For IP Asset:
 
 - **NEXT_PUBLIC_QR_CODE_TV** ：Setup the QR code address

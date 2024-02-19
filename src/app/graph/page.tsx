@@ -13,10 +13,11 @@ export async function generateMetadata({
   searchParams: { highlight_id: string };
 }) {
   const highlightId = searchParams?.highlight_id;
-
+  const metadataBase = process.env.METADATA_BASE || "";
   return {
+    metadataBase: metadataBase ? new URL(metadataBase) : null,
     openGraph: {
-      images: `/og/graph/${highlightId || "default"}`,
+      images: `${metadataBase}/og/graph/${highlightId || "default"}`,
     },
   };
 }
