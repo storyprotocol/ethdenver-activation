@@ -7,6 +7,20 @@ import GraphChart from "@/components/pages/GraphChart";
 import GraphChapters from "./GraphChapters";
 import { envConfig } from "@/lib/envConfig";
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { highlight_id: string };
+}) {
+  const highlightId = searchParams?.highlight_id;
+
+  return {
+    openGraph: {
+      images: `/og/graph/${highlightId || "default"}`,
+    },
+  };
+}
+
 export default async function Page({
   searchParams,
 }: {
