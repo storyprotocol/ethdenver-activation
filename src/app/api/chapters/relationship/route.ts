@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { QueryChaptersLaterThanProps } from "@/interface/chapterRelationShipRequest";
-import { ErrorCode, http400Error } from "../../errorUtils";
+import { ErrorCode, errorHandler, http400Error } from "../../errorUtils";
 import { EnvKey, GetEnv } from "../../utils";
 import { queryChaptersAfterID } from "./server";
 
@@ -23,7 +23,8 @@ export const GET = async (request: NextRequest): Promise<Response> => {
       limit,
     } as QueryChaptersLaterThanProps);
   } catch (err) {
-    throw err;
+    console.error(err);
+    return errorHandler(err as Error);
   }
   return Response.json(response);
 };
