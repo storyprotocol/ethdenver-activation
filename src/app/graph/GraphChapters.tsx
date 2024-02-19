@@ -31,7 +31,7 @@ export default function GraphChapters({
             isValidating={isValidating}
           />
           {!isValidating ? (
-            <div className="mt-4 text-xl font-medium">The story so far... </div>
+            <div className="text-xl font-medium">The story so far... </div>
           ) : (
             <> </>
           )}

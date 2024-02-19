@@ -68,7 +68,7 @@ export const generateChartOption = ({
     forceOpt = {
       edgeLength: [10, 20],
       repulsion: 20,
-      gravity: 0.4,
+      gravity: 0.3,
       zoom: 1,
     };
   } else if (isMediumDevice) {
@@ -140,9 +140,9 @@ export const generateChartOption = ({
           ...(!isTv
             ? forceOpt
             : {
-                edgeLength: [10, 50],
-                repulsion: 50,
-                gravity: 0.2,
+                edgeLength: [10, 55],
+                repulsion: 55,
+                gravity: 0.1,
               }),
           layoutAnimation: true,
         },
