@@ -7,7 +7,7 @@ import {
 } from "../../model";
 
 export const dynamic = "force-dynamic";
-// export const maxDuration = 300;
+export const maxDuration = 300;
 
 const uploadTotal = process.env.UPLOAD_TOTAL || "10";
 const uploadInterval = process.env.UPLOAD_INTERVAL || "15";
