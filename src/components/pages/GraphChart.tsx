@@ -66,12 +66,21 @@ export default function GraphChart(props: GraphChartProps) {
   }, [getData]);
 
   useEffect(() => {
-    if (domRef && domRef.current && allData) {
+    if (domRef && domRef.current) {
+      chartRef.current = init(domRef.current);
+    }
+    return () => {
+      chartRef.current?.dispose();
+    };
+  }, [domRef]);
+
+  useEffect(() => {
+    if (chartRef.current && allData) {
       const chartData = generateChartData(allData);
       if (lastId.current < chartData.dataLastId) {
         lastId.current = chartData.dataLastId;
       }
-      chartRef.current = init(domRef.current);
+
       const option = generateChartOption({
         chartData,
         highlightId,
@@ -81,10 +90,7 @@ export default function GraphChart(props: GraphChartProps) {
       });
       chartRef.current.setOption(option);
     }
-    () => {
-      chartRef.current?.dispose();
-    };
-  }, [allData, domRef, highlightId, isMediumDevice, isSmallDevice, isTv]);
+  }, [allData, chartRef, highlightId, isMediumDevice, isSmallDevice, isTv]);
 
   useEffect(() => {
     window.addEventListener("resize", function () {
