@@ -9,9 +9,10 @@ const FROM_CHAPTER_ID = "from_chapter_id";
 const LIMIT = "limit";
 
 export const GET = async (request: NextRequest): Promise<Response> => {
-  const searchParams = request.nextUrl.searchParams;
   let response = {};
   try {
+    const searchParams = request.nextUrl.searchParams;
+
     const paramID = searchParams.get(FROM_CHAPTER_ID);
     const paramLimit = searchParams.get(LIMIT);
     validateFromChapterId(paramID);
