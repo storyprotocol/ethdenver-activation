@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const FROM_CHAPTER_ID = "from_chapter_id";
 const LIMIT = "limit";
 
-export const GET = async (request: NextRequest): Promise<Response> => {
+export async function GET(request: NextRequest): Promise<Response> {
   let response = {};
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -28,7 +28,7 @@ export const GET = async (request: NextRequest): Promise<Response> => {
     return errorHandler(err as Error);
   }
   return Response.json(response);
-};
+}
 const isEmpty = (value: any): boolean => value === undefined || value === null;
 const validateLimit = (value: string | number | undefined | null): void => {
   if (isEmpty(value)) {
