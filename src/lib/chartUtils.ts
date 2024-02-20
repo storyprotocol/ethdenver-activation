@@ -122,6 +122,13 @@ export const generateChartOption = ({
               padding: [0, 0, 0, 0],
               rich: {
                 a: {
+                  /**
+                   * In order to render echarts correctly on the server side when
+                   * generating the og/twitter image, we need to set a fixed font-family.
+                   * The fontFamily can be any value, BUT IT MUST BE SAME AS THE
+                   * value in registerFont(node-canvas) when generate the og/twitter
+                   */
+                  fontFamily: "Roboto",
                   color: "#fff",
                   fontSize: "24px",
                   fontWeight: "bold",
