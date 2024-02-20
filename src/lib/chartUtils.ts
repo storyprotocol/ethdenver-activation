@@ -122,10 +122,8 @@ export const generateChartOption = ({
               padding: [0, 0, 0, 0],
               rich: {
                 a: {
-                  fontFamily: "Arial, sans-serif",
                   color: "#fff",
                   fontSize: "24px",
-                  fontWeight: "bold",
                 },
               },
             };

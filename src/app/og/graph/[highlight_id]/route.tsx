@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { queryChaptersAfterID } from "@/app/api/chapters/relationship/server";
 import { generateChartData, generateChartOption } from "@/lib/chartUtils";
 import { NextRequest } from "next/server";
-import { createCanvas } from "canvas";
+import { createCanvas, registerFont } from "canvas";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +36,13 @@ export async function GET(
   chart.setOption(chartOptions);
 
   const dataURL = canvas.toDataURL("image/png");
-  chart.dispose();
+  // chart.dispose();
+
+  return new Response(canvas.toBuffer(), {
+    headers: {
+      "Content-Type": "image/png",
+    },
+  });
 
   return new ImageResponse(
     (
