@@ -88,7 +88,7 @@ export const generateChartOption = ({
     tooltip: {
       show: false,
     },
-    Animation: true,
+    animation: true,
     series: [
       {
         type: "graph",

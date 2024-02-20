@@ -22,7 +22,7 @@ export async function GET(
   const highlightId = params.highlight_id;
   const response = await queryChaptersAfterID({
     from_chapter_id: 0,
-    limit: 1000,
+    limit: 100000,
   });
 
   /**
@@ -54,8 +54,17 @@ export async function GET(
     highlightId,
     isTv: true,
   });
-  chart.setOption(chartOptions);
 
+  /**
+   * Disable animation to avoid the "You" tag not being displayed correctly.
+   */
+  chartOptions.animation = false;
+  chartOptions.series.forEach((item) => {
+    item.animation = false;
+    item.force.layoutAnimation = false;
+  });
+
+  chart.setOption(chartOptions);
   const dataURL = canvas.toDataURL("image/png");
   chart.dispose();
 
