@@ -6,6 +6,7 @@ import Image from "../../../node_modules/next/image.d";
 import GraphChart from "@/components/pages/GraphChart";
 import GraphChapters from "./GraphChapters";
 import { envConfig } from "@/lib/envConfig";
+import ShareStory from "@/components/pages/ShareStory";
 
 export async function generateMetadata({
   searchParams,
@@ -37,6 +38,7 @@ export default async function Page({
         highlightId={highlightId}
       />
       <GraphChapters chapterId={highlightId} className="mb-4" />
+      {highlightId ? <ShareStory /> : <></>}
       <Button asChild className="shadow-2xl">
         <Link href="/chapters">
           {highlightId ? (

@@ -105,7 +105,8 @@ export const generateChartOption = ({
           show: false,
         },
         lineStyle: {
-          opacity: 0.8,
+          color: "rgba(255,255,255,0.65)",
+          width: 2,
         },
         data: chartData.nodes.map(function (node: any) {
           node.cursor = "default";
