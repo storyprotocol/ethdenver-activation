@@ -36,9 +36,12 @@ export default async function Page({
       <GraphChart
         className={`${highlightId ? "h-[90vw] max-h-[600px]" : "grow"}`}
         highlightId={highlightId}
+        disablePolling={true}
       />
-      <GraphChapters chapterId={highlightId} className="mb-4" />
-      {highlightId ? <ShareStory /> : <></>}
+      {highlightId ? (
+        <GraphChapters chapterId={highlightId} className="mb-4" />
+      ) : null}
+      {highlightId ? <ShareStory /> : null}
       <Button asChild className="shadow-2xl">
         <Link href="/chapters">
           {highlightId ? (
