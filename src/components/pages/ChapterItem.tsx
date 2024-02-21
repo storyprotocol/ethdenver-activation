@@ -51,7 +51,7 @@ export default function ChapterItem({
                 {showSiblingCount ? (
                   <div className={"ml-2 flex w-12 items-center font-medium"}>
                     <Image src={branchIcon} alt={""} />
-                    {chapter.sibling_count}
+                    {chapter.child_count}
                   </div>
                 ) : (
                   <></>
