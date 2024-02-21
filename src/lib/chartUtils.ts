@@ -129,7 +129,7 @@ export const generateChartOption = ({
                    * The fontFamily can be any value, BUT IT MUST BE SAME AS THE
                    * value in registerFont(node-canvas) when generate the og/twitter
                    */
-                  fontFamily: "Roboto",
+                  fontFamily: "Roboto, sans-serif",
                   color: "#fff",
                   fontSize: "24px",
                   fontWeight: "bold",
