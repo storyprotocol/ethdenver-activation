@@ -11,10 +11,12 @@ export default function ChapterItem({
   chapter,
   showSiblingCount,
   cardStyle,
+  isHighLight,
 }: {
   chapter: Chapter;
   showSiblingCount?: boolean;
   cardStyle?: boolean;
+  isHighLight?: boolean;
 }) {
   return (
     <div
@@ -23,29 +25,50 @@ export default function ChapterItem({
         cardStyle && " rounded-2xl bg-[#AA2627]/70 p-6 pr-4 shadow-2xl",
       )}
     >
-      <div className={"flex items-center opacity-50"}>
-        <Image src={hashIcon} alt={"wallet"} />
-        <span className={"ml-1 text-xs"}>
-          {chapter.wallet_address?.slice(0, 8)}
-        </span>
-      </div>
-      <div className={cn("flex items-center", cardStyle ? "mt-2.5" : "mt-1")}>
-        <div className={"w-1 flex-1 break-words text-xl"}>
-          {chapter.content}
-        </div>
-
-        {showSiblingCount ? (
-          <div className={"ml-2 flex w-12 items-center font-medium"}>
-            <Image src={branchIcon} alt={""} />
-            {chapter.sibling_count}
+      <div className="flex items-center justify-items-center">
+        <div className="grow">
+          <div className={"flex items-center opacity-50"}>
+            <Image src={hashIcon} alt={"wallet"} />
+            <span className={"ml-1 text-xs"}>
+              {chapter.wallet_address?.slice(0, 8)}
+            </span>
           </div>
+          <div
+            className={cn("flex items-center", cardStyle ? "mt-2.5" : "mt-1")}
+          >
+            <div className={"w-1 flex-1 break-words text-xl"}>
+              {chapter.content}
+            </div>
+
+            {isHighLight ? (
+              <>
+                <div className={"ml-2 flex w-12 items-center font-medium"}>
+                  You
+                </div>
+              </>
+            ) : (
+              <>
+                {showSiblingCount ? (
+                  <div className={"ml-2 flex w-12 items-center font-medium"}>
+                    <Image src={branchIcon} alt={""} />
+                    {chapter.sibling_count}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+          </div>
+          <div></div>
+        </div>
+        {showSiblingCount ? (
+          <></>
         ) : (
-          <div className={"ml-2 flex w-6 items-center"}>
+          <div className={"ml-2 flex w-6 items-center justify-items-center"}>
             <Image src={arrowRight} alt={""} />
           </div>
         )}
       </div>
-      <div></div>
     </div>
   );
 }

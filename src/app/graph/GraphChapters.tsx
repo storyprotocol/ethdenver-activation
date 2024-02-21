@@ -38,6 +38,7 @@ export default function GraphChapters({
           <ChapterList
             isLoading={isLoading}
             chapterListData={chapterListData}
+            isHighLight={true}
           />
         </>
       ) : (
