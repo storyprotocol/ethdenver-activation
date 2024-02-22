@@ -5,6 +5,7 @@ import { ChapterListResponse } from "@/interface/chapterListResponse";
 import { ErrorResponse } from "@/lib/fetcher";
 import useSWR from "swr";
 import ChapterList from "../chapters/[chapter_id]/ChapterList";
+import SuccessAlert from "@/components/pages/SuccessAlert";
 
 export default function GraphChapters({
   chapterId,
@@ -30,6 +31,16 @@ export default function GraphChapters({
             onRetry={mutate}
             isValidating={isValidating}
           />
+          {!error && !isValidating ? (
+            <SuccessAlert
+              title="Great - you’ve contributed to this storyline!"
+              msg={
+                "If you gave us an address, keep an eye out for your commemorative NFT."
+              }
+            />
+          ) : (
+            <></>
+          )}
           {!isValidating ? (
             <div className="text-xl font-medium">The story so far... </div>
           ) : (

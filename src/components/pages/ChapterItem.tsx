@@ -6,6 +6,7 @@ import hashIcon from "@/assets/chapter/hash_icon.svg";
 import branchIcon from "@/assets/chapter/branch_icon.svg";
 import arrowRight from "@/assets/common/arrow_right.svg";
 import { cn } from "@/lib/utils";
+import TooltipComponent from "../ui/tooltip";
 
 export default function ChapterItem({
   chapter,
@@ -49,10 +50,21 @@ export default function ChapterItem({
             ) : (
               <>
                 {showSiblingCount ? (
-                  <div className={"ml-2 flex w-12 items-center font-medium"}>
-                    <Image src={branchIcon} alt={""} />
-                    {chapter.child_count}
-                  </div>
+                  <TooltipComponent
+                    disabled={isHighLight}
+                    text={
+                      <div className="max-w-[122px]">{`This contribution has ${chapter.child_count} children`}</div>
+                    }
+                  >
+                    <div
+                      className={
+                        "ml-2 flex w-12 cursor-pointer items-center font-medium"
+                      }
+                    >
+                      <Image src={branchIcon} alt={""} />
+                      {chapter.child_count}
+                    </div>
+                  </TooltipComponent>
                 ) : (
                   <></>
                 )}

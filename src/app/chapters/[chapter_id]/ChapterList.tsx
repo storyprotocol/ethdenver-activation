@@ -12,7 +12,7 @@ export default function ChapterList({
   isHighLight?: boolean;
 }) {
   return isLoading ? (
-    <ChapterSkeleton />
+    <ChapterSkeleton length={isHighLight ? 2 : 3} />
   ) : (
     <>
       {chapterListData.slice(0, chapterListData.length - 1).map((chapter) => (
