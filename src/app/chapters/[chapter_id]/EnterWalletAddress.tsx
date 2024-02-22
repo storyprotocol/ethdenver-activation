@@ -3,7 +3,11 @@ import TextareaAutosize from "react-textarea-autosize";
 import Image from "next/image";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
 import { useEffect, useRef, useState } from "react";
-import { cn, temporaryRepairIosKeyboard } from "@/lib/utils";
+import {
+  cn,
+  temporaryRepairIosKeyboard,
+  temporaryRepairIosKeyboardFocus,
+} from "@/lib/utils";
 import { createPublicClient, http, isAddress } from "viem";
 import { mainnet } from "viem/chains";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -93,6 +97,7 @@ export default function EnterWalletAddress({
             setWalletAddress(e.target.value);
           }}
           onBlur={() => temporaryRepairIosKeyboard()}
+          onFocus={() => temporaryRepairIosKeyboardFocus()}
         />
         <div className={"absolute bottom-0 right-0 flex items-center"}>
           {isResolving ? (
