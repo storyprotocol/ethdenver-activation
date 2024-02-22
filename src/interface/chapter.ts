@@ -5,5 +5,5 @@ export interface Chapter {
   parent_id: number;
   wallet_address: string;
   path: number[];
-  sibling_count: number;
+  child_count: number;
 }

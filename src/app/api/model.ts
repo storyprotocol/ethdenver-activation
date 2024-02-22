@@ -54,6 +54,14 @@ export async function queryChapterSiblingNodes(
   return rows.map((row) => toChapterMO(row));
 }
 
+export async function queryChapterChildNodes(
+  chapterId: number,
+): Promise<ChapterMO[]> {
+  const { rows } =
+    await sql`SELECT * FROM chapter WHERE parent_id = ${chapterId} order by id asc`;
+  return rows.map((row) => toChapterMO(row));
+}
+
 export async function queryChapterByIdAndSid(
   storyId: number,
   Id: number,
