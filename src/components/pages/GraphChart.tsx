@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { init, EChartsType } from "echarts";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
 import axios, { all } from "axios";
 import {
@@ -19,6 +20,7 @@ interface GraphChartProps {
 }
 
 export default function GraphChart(props: GraphChartProps) {
+  const router = useRouter();
   const { className, highlightId, isTv, disablePolling } = props;
   const [allData, setAllData] = useState<ChapterRelationship[]>([]);
   const lastId = useRef(0);
@@ -76,11 +78,17 @@ export default function GraphChart(props: GraphChartProps) {
   useEffect(() => {
     if (domRef && domRef.current) {
       chartRef.current = init(domRef.current);
+      chartRef.current.on("click", (e) => {
+        if (highlightId) {
+          const id = (e.data as unknown as { id: string }).id;
+          router.push(`/graph?highlight_id=${id}`);
+        }
+      });
     }
     return () => {
       chartRef.current?.dispose();
     };
-  }, [domRef]);
+  }, [domRef, highlightId, router]);
 
   useEffect(() => {
     if (chartRef.current && allData) {
