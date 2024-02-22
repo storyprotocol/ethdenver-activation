@@ -3,7 +3,11 @@ import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
 import arrowRightBlack from "@/assets/common/arrow_right_black.svg";
 import { useState } from "react";
-import { cn, temporaryRepairIosKeyboard } from "@/lib/utils";
+import {
+  cn,
+  temporaryRepairIosKeyboard,
+  temporaryRepairIosKeyboardFocus,
+} from "@/lib/utils";
 
 export default function NewChapterTextarea({
   isLoading,
@@ -40,6 +44,7 @@ export default function NewChapterTextarea({
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
           onBlur={() => temporaryRepairIosKeyboard()}
+          onFocus={() => temporaryRepairIosKeyboardFocus()}
         />
         <div className={"absolute bottom-0 right-0 flex items-center"}>
           {maxLength && (

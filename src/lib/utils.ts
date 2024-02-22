@@ -18,3 +18,11 @@ export function temporaryRepairIosKeyboard() {
     clearInterval(timer);
   }, 1);
 }
+
+export function temporaryRepairIosKeyboardFocus() {
+  let timer: NodeJS.Timeout;
+  timer = setInterval(function () {
+    window.scrollTo(0, 200);
+    clearInterval(timer);
+  }, 1);
+}
