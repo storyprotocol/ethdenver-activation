@@ -3,6 +3,7 @@ export interface ChapterRelationship {
   story_id: number;
   parent_id: number;
   wallet_address: string;
+  content: string;
 }
 
 export interface ChapterRelationshipResponse {

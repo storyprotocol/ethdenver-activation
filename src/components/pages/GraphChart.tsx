@@ -5,7 +5,7 @@ import { init, EChartsType } from "echarts";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
-import axios, { all } from "axios";
+import axios from "axios";
 import {
   ChapterRelationshipResponse,
   ChapterRelationship,
@@ -79,8 +79,8 @@ export default function GraphChart(props: GraphChartProps) {
     if (domRef && domRef.current) {
       chartRef.current = init(domRef.current);
       chartRef.current.on("click", (e) => {
-        if (highlightId) {
-          const id = (e.data as unknown as { id: string }).id;
+        const id = (e.data as unknown as { id: string }).id;
+        if (highlightId && id) {
           router.push(
             `/graph?highlight_id=${id}&timestamp=${new Date().getTime()}`,
           );

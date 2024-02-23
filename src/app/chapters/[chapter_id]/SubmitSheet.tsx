@@ -91,36 +91,36 @@ export default function SubmitSheet({
         side={"bottom"}
         className={"flex h-full w-full justify-center bg-linear p-0"}
       >
-        <div
-          className={"flex h-full w-full max-w-screen-sm flex-col px-4 pt-8"}
-        >
+        <div className={"flex h-full w-full flex-col px-4 pt-8"}>
           <div className={"text-5xl font-medium"}>
             <OnchainChronicles />
           </div>
 
-          {isSubmitting && <Spinner />}
+          <div className="flex max-w-screen-sm grow flex-col self-center">
+            {isSubmitting && <Spinner />}
 
-          {showWallet ? (
-            <EnterWalletAddress
-              walletOrEns={walletOrEnsAddress}
-              setWalletAddress={setWalletOrEnsAddress}
-              setRealWalletAddress={setRealWalletAddress}
-              onSubmit={async () => {
-                await submitNewChapter(chapterId, content, realWalletAddress);
-              }}
-            />
-          ) : (
-            <SubmitMethodChoose
-              isSubmitting={isSubmitting}
-              toWallet={() => {
-                setShowWallet(true);
-              }}
-              toAnonymously={async () => {
-                await submitNewChapter(chapterId, content);
-              }}
-            />
-          )}
-          <FooterLogo />
+            {showWallet ? (
+              <EnterWalletAddress
+                walletOrEns={walletOrEnsAddress}
+                setWalletAddress={setWalletOrEnsAddress}
+                setRealWalletAddress={setRealWalletAddress}
+                onSubmit={async () => {
+                  await submitNewChapter(chapterId, content, realWalletAddress);
+                }}
+              />
+            ) : (
+              <SubmitMethodChoose
+                isSubmitting={isSubmitting}
+                toWallet={() => {
+                  setShowWallet(true);
+                }}
+                toAnonymously={async () => {
+                  await submitNewChapter(chapterId, content);
+                }}
+              />
+            )}
+            <FooterLogo />
+          </div>
         </div>
 
         {error && (

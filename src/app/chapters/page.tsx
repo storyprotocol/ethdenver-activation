@@ -27,7 +27,13 @@ export default function Page() {
       <div className={"px-4 pt-8"}>
         <div
           className={"mb-4 flex cursor-pointer text-xl"}
-          onClick={() => router.back()}
+          onClick={() => {
+            if (sessionStorage.getItem("isGraphPage") === "true") {
+              router.push(`/graph?timestamp=${new Date().getTime()}`);
+            } else {
+              router.push(`/`);
+            }
+          }}
         >
           <Image src={arrowLeftIcon} alt={"back"} />
           <span>Back</span>
