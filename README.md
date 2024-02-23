@@ -317,4 +317,9 @@ INSERT INTO public.relationship (relationship_type,src_asset_id,dst_asset_id,rel
 	 ('APPEARS_IN','9070c318-a044-4620-aeb0-6b91c091090c','48cc9133-c856-4f30-aed8-0f0cae66eaf6',NULL,NULL,0,1707035242),
 	 ('APPEARS_IN','82e2b8ba-09a9-44d5-91b6-fd94aa9ee663','209d3a9e-d29a-494b-839b-2e2dc02e0576',NULL,NULL,0,1707035242),
 	 ('APPEARS_IN','4adfab37-e6a6-42b3-9c26-1fa0d1ae4b3a','212e7fc6-8ab8-4984-913c-90de8d2239b1',NULL,NULL,0,1707035242);
+
+-- Insert a default upload record(Required)
+INSERT INTO public.upload_data_statistics(
+	id, last_upload_time, total_upload_story, total_upload_chapter, total_upload_relationship)
+	VALUES ('9ff3a877-fab6-4c64-ac3e-d4c4f333e5ff', 0, 0, 0, 0);
 ```
