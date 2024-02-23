@@ -12,6 +12,7 @@ import NetworkErrorAlert from "@/components/pages/NetworkErrorAlert";
 import axios from "axios";
 import { ErrorResponse } from "@/interface/errorResponse";
 import { formatError } from "@/lib/fetcher";
+import OnchainChronicles from "@/components/pages/OnchainChronicles";
 
 export default function SubmitSheet({
   open,
@@ -91,7 +92,9 @@ export default function SubmitSheet({
         <div
           className={"flex h-full w-full max-w-screen-sm flex-col px-4 pt-8"}
         >
-          <div className={"text-5xl font-medium"}>Onchain Chronicles</div>
+          <div className={"text-5xl font-medium"}>
+            <OnchainChronicles />
+          </div>
 
           {isSubmitting && <Spinner />}
 
