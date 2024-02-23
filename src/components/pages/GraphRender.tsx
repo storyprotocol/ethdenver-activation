@@ -1,6 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useEffect } from "react";
 import GraphDesktopRender from "./GraphDesktopRender";
 import GraphMobileRender from "./GraphMobileRender";
 import Spinner from "@/components/pages/Spinner";
@@ -13,6 +14,11 @@ export default function GraphRender(props: GraphRenderProps) {
   const { highlightId } = props;
   const isMediumDevice = useMediaQuery("(min-width : 769px)");
   const isSmallDevice = useMediaQuery("(max-width : 768px)");
+
+  useEffect(() => {
+    sessionStorage.setItem("isGraphPage", "true");
+  }, []);
+
   if (!isMediumDevice && !isSmallDevice) {
     return (
       <main className="flex w-full max-w-screen-sm flex-1 flex-col content-between px-4 pb-4 pt-8">
@@ -20,6 +26,7 @@ export default function GraphRender(props: GraphRenderProps) {
       </main>
     );
   }
+
   return (
     <>
       {highlightId && isMediumDevice ? (

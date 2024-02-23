@@ -8,7 +8,7 @@ import { ChapterListResponse } from "@/interface/chapterListResponse";
 import ChapterList from "./ChapterList";
 import NewChapterTextarea from "./NewChapterTextarea";
 import SubmitSheet from "./SubmitSheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ErrorResponse } from "@/lib/fetcher";
 import NetworkErrorAlert from "@/components/pages/NetworkErrorAlert";
 
@@ -30,6 +30,10 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
     setPreparedContent(newContent);
     setOpen(true);
   };
+
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
 
   return (
     <main className={"w-full max-w-screen-sm flex-1"}>
