@@ -16,7 +16,7 @@ export default function FooterLogo() {
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
     setIsHighlight(Boolean(params.get("highlight_id")));
-  }, []);
+  }, [pathname]);
   return (
     <>
       {pathname === "/tv" ||

@@ -8,9 +8,10 @@ import { ChapterListResponse } from "@/interface/chapterListResponse";
 import ChapterList from "./ChapterList";
 import NewChapterTextarea from "./NewChapterTextarea";
 import SubmitSheet from "./SubmitSheet";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ErrorResponse } from "@/lib/fetcher";
 import NetworkErrorAlert from "@/components/pages/NetworkErrorAlert";
+import ClearGraphPage from "@/components/pages/ClearGraphPage";
 
 export default function Page({ params }: { params: { chapter_id: string } }) {
   const chapterId = params.chapter_id;
@@ -30,10 +31,6 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
     setPreparedContent(newContent);
     setOpen(true);
   };
-
-  useEffect(() => {
-    sessionStorage.clear();
-  }, []);
 
   return (
     <main className={"w-full max-w-screen-sm flex-1"}>
@@ -64,6 +61,7 @@ export default function Page({ params }: { params: { chapter_id: string } }) {
           content={preparedContent}
         />
       </div>
+      <ClearGraphPage />
     </main>
   );
 }
