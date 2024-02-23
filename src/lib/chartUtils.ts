@@ -69,10 +69,16 @@ export const generateChartOption = ({
 
   if (isSmallDevice) {
     let zoom = 1;
-    if (chartData.nodes.length < 30) {
-      zoom = 3;
-    } else if (chartData.nodes.length < 50) {
-      zoom = 2;
+    if (chartData.nodes.length < 100) {
+      zoom = Math.max(
+        Number(
+          (100 / chartData.nodes.length > 3
+            ? 3
+            : 100 / chartData.nodes.length
+          ).toFixed(1),
+        ),
+        0.5,
+      );
     }
     forceOpt = {
       edgeLength: [10, 20],
@@ -133,10 +139,10 @@ export const generateChartOption = ({
             renderMode: "html",
             className: "",
             formatter: function (params: any) {
-              return `<div style="display: block; font-size: 14px; max-width: 320px; color: #282828;">
+              return `<div style="display: block; font-size: 14px; max-width: 340px; color: #282828; tab-size: 0;">
               <img style="display: inline-block" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPG1hc2sgaWQ9Im1hc2swXzY1NF8xMDIwIiBzdHlsZT0ibWFzay10eXBlOmFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiPgo8cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzY1NF8xMDIwKSI+CjxwYXRoIGQ9Ik03LjYxNTU2IDEyLjg2MzRWOC4yOTY3TDMuNjE1NTYgNS45ODAwNFYxMC41NDY3TDcuNjE1NTYgMTIuODYzNFpNOC45NDg4OSAxMi44NjM0TDEyLjk0ODkgMTAuNTQ2N1Y1Ljk4MDA0TDguOTQ4ODkgOC4yOTY3VjEyLjg2MzRaTTguMjgyMjMgNy4xNDY3TDEyLjIzMjIgNC44NjMzN0w4LjI4MjIzIDIuNTgwMDRMNC4zMzIyMyA0Ljg2MzM3TDguMjgyMjMgNy4xNDY3Wk0yLjk0ODg5IDExLjcxMzRDMi43Mzc3OCAxMS41OTExIDIuNTczODkgMTEuNDMgMi40NTcyMyAxMS4yM0MyLjM0MDU2IDExLjAzIDIuMjgyMjMgMTAuODA3OCAyLjI4MjIzIDEwLjU2MzRWNS4yNjMzN0MyLjI4MjIzIDUuMDE4OTMgMi4zNDA1NiA0Ljc5NjcgMi40NTcyMyA0LjU5NjdDMi41NzM4OSA0LjM5NjcgMi43Mzc3OCA0LjIzNTU5IDIuOTQ4ODkgNC4xMTMzN0w3LjYxNTU2IDEuNDMwMDRDNy44MjY2NyAxLjMwNzgyIDguMDQ4ODkgMS4yNDY3IDguMjgyMjMgMS4yNDY3QzguNTE1NTYgMS4yNDY3IDguNzM3NzggMS4zMDc4MiA4Ljk0ODg5IDEuNDMwMDRMMTMuNjE1NiA0LjExMzM3QzEzLjgyNjcgNC4yMzU1OSAxMy45OTA2IDQuMzk2NyAxNC4xMDcyIDQuNTk2N0MxNC4yMjM5IDQuNzk2NyAxNC4yODIyIDUuMDE4OTMgMTQuMjgyMiA1LjI2MzM3VjEwLjU2MzRDMTQuMjgyMiAxMC44MDc4IDE0LjIyMzkgMTEuMDMgMTQuMTA3MiAxMS4yM0MxMy45OTA2IDExLjQzIDEzLjgyNjcgMTEuNTkxMSAxMy42MTU2IDExLjcxMzRMOC45NDg4OSAxNC4zOTY3QzguNzM3NzggMTQuNTE4OSA4LjUxNTU2IDE0LjU4IDguMjgyMjMgMTQuNThDOC4wNDg4OSAxNC41OCA3LjgyNjY3IDE0LjUxODkgNy42MTU1NiAxNC4zOTY3TDIuOTQ4ODkgMTEuNzEzNFoiIGZpbGw9IiMyODI4MjgiLz4KPC9nPgo8L3N2Zz4K" />
               <div style="display: inline-block; opacity: 0.5; font-size: 12px;">${params.data.name}</div>
-              <div style="display: block; max-width: 100%; word-break: break-all; word-wrap: break-word; white-space: pre-wrap;">${params.data.desc}</div>
+              <div style="display: block; max-width: 100%; word-break: normal; word-wrap: normal; white-space: normal; tab-size: 0;">${params.data.desc}</div>
               </div>`;
             },
           };
@@ -193,12 +199,11 @@ export const generateChartOption = ({
 
 export const getGravity = (dataLength: number) => {
   let zoom = 1;
-  if (dataLength < 30) {
-    zoom = 3;
-  } else if (dataLength < 50) {
-    zoom = 2;
-  } else if (dataLength < 100) {
-    zoom = 1;
+  if (dataLength < 120) {
+    zoom = Math.max(
+      Number((120 / dataLength > 3 ? 3 : 120 / dataLength).toFixed(1)),
+      0.5,
+    );
   } else {
     zoom = Math.max(Number((1 - dataLength / 10000).toFixed(1)), 0.5);
   }
