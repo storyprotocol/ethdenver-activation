@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import arrowRightBlackIcon from "@/assets/common/arrow_right_black.svg";
 import { Button } from "@/components/ui/button";
+import ClearGraphPage from "@/components/pages/ClearGraphPage";
 
 export default function Page() {
   return (
@@ -38,6 +39,7 @@ export default function Page() {
           </Button>
         </div>
       </div>
+      <ClearGraphPage />
     </main>
   );
 }
