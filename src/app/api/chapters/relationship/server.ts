@@ -16,6 +16,7 @@ export async function queryChaptersAfterID({
       id,
       story_id,
       parent_id,
+      content,
       wallet_address 
     FROM 
       chapter 
