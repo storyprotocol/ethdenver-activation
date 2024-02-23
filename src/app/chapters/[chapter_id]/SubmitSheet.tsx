@@ -62,7 +62,9 @@ export default function SubmitSheet({
        * Redirect to the graph page need times when the network is slow
        * So we didn't setIsSubmitting(false) to keep the loading spinner
        */
-      router.push(`/graph?highlight_id=${response.data.id}`);
+      router.push(
+        `/graph?highlight_id=${response.data.id}&timestamp=${new Date().getTime()}`,
+      );
     } catch (e) {
       console.error("Failed to create chapter", e);
       setIsSubmitting(false);
