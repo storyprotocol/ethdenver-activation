@@ -81,7 +81,9 @@ export default function GraphChart(props: GraphChartProps) {
       chartRef.current.on("click", (e) => {
         if (highlightId) {
           const id = (e.data as unknown as { id: string }).id;
-          router.push(`/graph?highlight_id=${id}`);
+          router.push(
+            `/graph?highlight_id=${id}&timestamp=${new Date().getTime()}`,
+          );
         }
       });
     }

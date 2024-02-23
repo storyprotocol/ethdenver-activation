@@ -26,7 +26,9 @@ export default function Page() {
 
         <div className="mt-4 flex gap-4 py-4">
           <Button className={"w-1/2 shadow-2xl"}>
-            <Link href="/graph">View IP Graph</Link>
+            <Link href={`/graph?timestamp=${new Date().getTime()}`}>
+              View IP Graph
+            </Link>
           </Button>
           <Button className={"w-1/2 shadow-2xl"} asChild>
             <Link href="/chapters">
