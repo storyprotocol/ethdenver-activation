@@ -80,7 +80,7 @@ export default function GraphChart(props: GraphChartProps) {
       chartRef.current = init(domRef.current);
       chartRef.current.on("click", (e) => {
         const id = (e.data as unknown as { id: string }).id;
-        if (highlightId && id) {
+        if (id) {
           router.push(
             `/graph?highlight_id=${id}&timestamp=${new Date().getTime()}`,
           );

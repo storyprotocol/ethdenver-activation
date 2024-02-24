@@ -31,7 +31,9 @@ export default function GraphChapters({
             onRetry={mutate}
             isValidating={isValidating}
           />
-          {!error && !isValidating ? (
+          {!error &&
+          !isValidating &&
+          sessionStorage.getItem("isSubmit") === "true" ? (
             <SuccessAlert
               title="Great - you’ve contributed to this storyline!"
               msg={

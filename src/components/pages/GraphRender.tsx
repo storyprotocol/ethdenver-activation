@@ -17,6 +17,9 @@ export default function GraphRender(props: GraphRenderProps) {
 
   useEffect(() => {
     sessionStorage.setItem("isGraphPage", "true");
+    return () => {
+      sessionStorage.setItem("isSubmit", "");
+    };
   }, []);
 
   if (!isMediumDevice && !isSmallDevice) {

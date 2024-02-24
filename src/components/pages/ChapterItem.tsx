@@ -44,7 +44,13 @@ export default function ChapterItem({
             {isHighLight ? (
               <>
                 <div className={"ml-2 flex w-12 items-center font-medium"}>
-                  You
+                  {sessionStorage.getItem("isSubmit") === "true" ? (
+                    <>You</>
+                  ) : (
+                    <>
+                      <Image src={branchIcon} alt={""} />
+                    </>
+                  )}
                 </div>
               </>
             ) : (
