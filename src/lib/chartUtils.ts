@@ -103,6 +103,9 @@ export const generateChartOption = ({
     tooltip: {
       show: false,
     },
+    itemStyle: {
+      cursor: "default",
+    },
     animation: true,
     series: [
       {
@@ -124,12 +127,9 @@ export const generateChartOption = ({
           width: 2,
         },
         data: chartData.nodes.map(function (node: any) {
-          node.cursor = "default";
-          if (highlightId) {
-            node.itemStyle = {
-              cursor: "pointer",
-            };
-          }
+          node.itemStyle = {
+            cursor: "pointer",
+          };
           node.tooltip = {
             show: true,
             position: "top",

@@ -58,6 +58,7 @@ export default function SubmitSheet({
         `/api/chapters`,
         requestBody,
       );
+      sessionStorage.setItem("isSubmit", "true");
       /**
        * Redirect to the graph page need times when the network is slow
        * So we didn't setIsSubmitting(false) to keep the loading spinner
