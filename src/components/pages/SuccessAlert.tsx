@@ -1,14 +1,27 @@
+"use client";
+
 import Image from "next/image";
 import shareSuccessIconPic from "@/assets/chapter/shareSuccess_icon.svg";
+import { useState } from "react";
 
 export default function SuccessAlert({
   title,
   msg,
+  duration,
 }: {
   title?: string;
   msg?: string;
+  duration?: number;
 }) {
-  if (!msg) {
+  const [hide, setHide] = useState(false);
+
+  if (duration) {
+    setTimeout(() => {
+      setHide(true);
+    }, duration);
+  }
+
+  if (!msg || hide) {
     return null;
   }
 
