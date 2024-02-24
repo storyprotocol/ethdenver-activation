@@ -35,6 +35,7 @@ export default function GraphChapters({
           !isValidating &&
           sessionStorage.getItem("isSubmit") === "true" ? (
             <SuccessAlert
+              duration={3000}
               title="Great - you’ve contributed to this storyline!"
               msg={
                 "If you gave us an address, keep an eye out for your commemorative NFT."

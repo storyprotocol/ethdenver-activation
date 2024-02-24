@@ -41,16 +41,10 @@ export default function ChapterItem({
               {chapter.content}
             </div>
 
-            {isHighLight ? (
+            {isHighLight && sessionStorage.getItem("isSubmit") === "true" ? (
               <>
                 <div className={"ml-2 flex w-12 items-center font-medium"}>
-                  {sessionStorage.getItem("isSubmit") === "true" ? (
-                    <>You</>
-                  ) : (
-                    <>
-                      <Image src={branchIcon} alt={""} />
-                    </>
-                  )}
+                  <>You</>
                 </div>
               </>
             ) : (
@@ -63,9 +57,7 @@ export default function ChapterItem({
                     }
                   >
                     <div
-                      className={
-                        "ml-2 flex w-12 cursor-pointer items-center font-medium"
-                      }
+                      className={`ml-2 flex w-12 ${chapter.child_count ? "cursor-pointer" : ""} items-center font-medium`}
                     >
                       <Image src={branchIcon} alt={""} />
                       {chapter.child_count}
