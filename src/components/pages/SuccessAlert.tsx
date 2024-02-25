@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import shareSuccessIconPic from "@/assets/chapter/shareSuccess_icon.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SuccessAlert({
   title,
@@ -13,23 +13,25 @@ export default function SuccessAlert({
   msg?: string;
   duration?: number;
 }) {
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(true);
 
-  if (duration) {
+  useEffect(() => {
     setTimeout(() => {
-      setHide(true);
-    }, duration);
-  }
+      setHide(false);
+    }, 1000);
+  }, []);
 
-  if (!msg || hide) {
-    return null;
-  }
+  useEffect(() => {
+    if (duration) {
+      setTimeout(() => {
+        setHide(true);
+      }, duration + 1000);
+    }
+  }, [duration]);
 
   return (
     <div
-      className={
-        "shadow-[0px_2px_8px_0px_rgba(0, 0, 0, 0.10)]	flex rounded-2xl bg-[#C9FFDB] pb-6 pl-6 pr-4 pt-6"
-      }
+      className={`shadow-[0px_2px_8px_0px_rgba(0, 0, 0, 0.10)]	opacity-1 flex h-auto rounded-2xl bg-[#C9FFDB] pb-6 pl-6 pr-4 pt-6 transition-all ${!msg || hide ? "h-0 pb-0 pl-0 pr-0 pt-0 opacity-0" : ""}`}
     >
       <div className="mr-2 grow text-base leading-normal text-[#282828]">
         <div>{title}</div>
