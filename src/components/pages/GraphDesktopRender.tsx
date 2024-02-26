@@ -28,7 +28,7 @@ export default function GraphDesktopRender(props: GraphDesktopRenderProps) {
         <GraphChart
           className={"grow pl-12"}
           highlightId={highlightId}
-          disablePolling={false}
+          disablePolling={Boolean(highlightId)}
         />
       </div>
       <div className="flex w-full min-w-[480px] max-w-screen-sm flex-1 flex-col pr-16	pt-56">
