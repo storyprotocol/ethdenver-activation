@@ -51,7 +51,6 @@ export default function ChapterItem({
               <>
                 {showSiblingCount ? (
                   <TooltipComponent
-                    disabled={isHighLight}
                     text={
                       <div className="max-w-[122px]">{`This contribution has ${chapter.child_count} ${chapter.child_count > 1 ? "children" : "child"}`}</div>
                     }

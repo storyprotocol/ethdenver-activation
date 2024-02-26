@@ -28,10 +28,10 @@ export default function GraphDesktopRender(props: GraphDesktopRenderProps) {
         <GraphChart
           className={"grow pl-12"}
           highlightId={highlightId}
-          disablePolling={true}
+          disablePolling={false}
         />
       </div>
-      <div className="flex w-full min-w-[480px] max-w-screen-sm flex-1 flex-col pr-16	pt-24">
+      <div className="flex w-full min-w-[480px] max-w-screen-sm flex-1 flex-col pr-16	pt-56">
         <GraphChapters chapterId={highlightId} className="mb-4" />
         <ShareStory />
         <Button asChild className="shadow-2xl">

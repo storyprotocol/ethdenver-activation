@@ -22,6 +22,12 @@ export default function GraphChapters({
   const chapterListData = data?.chapters || [];
   chapterListData.sort((a, b) => a.id - b.id);
 
+  if (!isLoading) {
+    setTimeout(() => {
+      sessionStorage.setItem("isSubmit", "");
+    }, 2000);
+  }
+
   return (
     <div className={className}>
       {chapterId ? (
