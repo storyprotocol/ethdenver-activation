@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import shareSuccessIconPic from "@/assets/chapter/shareSuccess_icon.svg";
+import * as Icons from "@radix-ui/react-icons";
 import { useState } from "react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function SuccessAlert({
   title,
@@ -16,6 +16,8 @@ export default function SuccessAlert({
   duration?: number;
 }) {
   const [toastList, setToastList] = useState(["success"]);
+  const isMediumDevice = useMediaQuery("(min-width : 769px)");
+  const isSmallDevice = useMediaQuery("(max-width : 768px)");
 
   return (
     <ToastPrimitive.Provider>
@@ -56,19 +58,19 @@ export default function SuccessAlert({
                   <div>{title}</div>
                   <div>{msg}</div>
                 </div>
-                <div className="flex content-center	justify-center">
-                  <Image
-                    className="ml-2.5"
-                    src={shareSuccessIconPic}
-                    alt={"Success Icon"}
-                  />
-                </div>
+                <ToastPrimitive.Close>
+                  <div className="rounded-full border p-1">
+                    <Icons.Cross2Icon className="shadow-[0px_0px_0px_2px_rgb(228, 226, 228)] h-4 w-4 text-[#282828]" />
+                  </div>
+                </ToastPrimitive.Close>
               </div>
             </motion.li>
           </ToastPrimitive.Root>
         ))}
       </AnimatePresence>
-      <ToastPrimitive.Viewport />
+      <ToastPrimitive.Viewport
+        className={`fixed w-[416px] max-w-screen-sm ${isMediumDevice ? "right-16 top-24" : ""} ${isSmallDevice ? "left-1/2 top-4	translate-x-[-50%]" : ""}`}
+      />
     </ToastPrimitive.Provider>
   );
 }
