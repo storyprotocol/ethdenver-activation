@@ -28,7 +28,7 @@ export default function GraphMobileRender(props: GraphMobileRenderProps) {
         <GraphChart
           className={`${highlightId ? "h-[90vw] max-h-[600px]" : "grow"}`}
           highlightId={highlightId}
-          disablePolling={false}
+          disablePolling={Boolean(highlightId)}
         />
         <div className="flex w-full max-w-screen-sm shrink flex-col self-center">
           {highlightId ? (
