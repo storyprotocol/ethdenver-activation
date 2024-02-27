@@ -80,6 +80,7 @@ export async function POST(request: NextRequest): Promise<Response> {
       path: parentChapter.path.concat([parentChapter.id]),
       is_anonymous: requestData.is_anonymous,
       parent_id: parentChapter.id,
+      has_child: false,
       credential: getUUID(),
       created_at: getTimestamp(),
     } as ChapterMO;

@@ -10,9 +10,21 @@ import { db } from "@vercel/postgres";
 
 // export const dynamic = "force-dynamic";
 
-export async function queryChaptersByRandom(num: number): Promise<ChapterMO[]> {
+export async function queryChaptersByRandom(
+  num: number,
+  excludeId: number,
+): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter ORDER BY RANDOM() LIMIT ${num}`;
+    await sql`SELECT * FROM chapter where id <> ${excludeId} ORDER BY RANDOM() LIMIT ${num}`;
+
+  return rows.map((row) => toChapterMO(row));
+}
+
+export async function queryLatestChaptersByRandom(
+  num: number,
+): Promise<ChapterMO[]> {
+  const { rows } =
+    await sql`SELECT * FROM chapter where has_child='false' ORDER BY RANDOM() LIMIT 1`;
 
   return rows.map((row) => toChapterMO(row));
 }
@@ -126,6 +138,10 @@ export async function createChapter(chapter: ChapterMO): Promise<number> {
       chapter.created_at,
     ];
     const res = await sql.query(text, values);
+
+    // update parent has_child field to true
+    await sql`update chapter set has_child = 'true' where id = ${chapter.parent_id}`;
+
     return res.rows[0].id;
   } catch (err) {
     // return a 500 custom error
@@ -281,6 +297,7 @@ export interface ChapterMO {
   level: number;
   path: number[];
   is_anonymous: boolean;
+  has_child: boolean;
   parent_id: number;
   credential: string;
   created_at: number;

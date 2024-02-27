@@ -1,4 +1,4 @@
-import { Chapter } from "@/interface/chapter";
+import { Chapter, toChapter } from "@/interface/chapter";
 import { NextRequest } from "next/server";
 import { CfgDefaultValue } from "../../config";
 import {
@@ -8,7 +8,11 @@ import {
   ErrorCode,
   errorHandler,
 } from "../../errorUtils";
-import { ChapterMO, queryChaptersByRandom } from "../../model";
+import {
+  ChapterMO,
+  queryChaptersByRandom,
+  queryLatestChaptersByRandom,
+} from "../../model";
 import { EnvKey, GetEnv } from "../../utils";
 
 export const dynamic = "force-dynamic";
@@ -17,25 +21,42 @@ export async function GET(request: NextRequest): Promise<Response> {
   const searchParams = request.nextUrl.searchParams;
 
   let count = 0;
-  let chapters: ChapterMO[] = [];
+  let latestChapterId = 0;
+  let randomChapters: ChapterMO[] = [];
+  let result: Chapter[] = [];
   try {
     count = verify(searchParams.get("count"));
-    chapters = await queryChaptersByRandom(count);
+
+    const latest = await queryLatestChaptersByRandom(1);
+    if (latest.length > 0) {
+      count = count - 1;
+      latestChapterId = latest[0].id;
+      result.push(toChapter(latest[0]));
+    }
+    if (count <= 0) {
+      return Response.json({
+        chapters: result,
+      });
+    }
+
+    randomChapters = await queryChaptersByRandom(count, latestChapterId);
+    if (randomChapters.length == 0) {
+      return Response.json({
+        chapters: result,
+      });
+    }
+
+    const temp = randomChapters.map((chapter) => {
+      return toChapter(chapter);
+    });
+
+    result = result.concat(temp);
   } catch (err) {
     return errorHandler(err as Error);
   }
 
   return Response.json({
-    chapters: chapters.map((chapter) => {
-      return {
-        id: chapter.id,
-        story_id: chapter.story_id,
-        content: chapter.content,
-        parent_id: chapter.parent_id,
-        wallet_address: chapter.wallet_address,
-        path: chapter.path,
-      } as Chapter;
-    }),
+    chapters: result,
   });
 }
 
