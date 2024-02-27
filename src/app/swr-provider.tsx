@@ -13,7 +13,7 @@ export const SWRProvider = ({
     <SWRConfig
       value={{
         fetcher: fetcher,
-        revalidateIfStale: false,
+        revalidateIfStale: true,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         shouldRetryOnError: false,
