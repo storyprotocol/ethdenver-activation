@@ -24,7 +24,7 @@ export async function queryLatestChaptersByRandom(
   num: number,
 ): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter where has_child='true' ORDER BY RANDOM() LIMIT 1`;
+    await sql`SELECT * FROM chapter where has_child=false ORDER BY RANDOM() LIMIT 1`;
 
   return rows.map((row) => toChapterMO(row));
 }
