@@ -3,6 +3,7 @@ import Image from "next/image";
 import arrowRightBlackIcon from "@/assets/common/arrow_right_black.svg";
 import { Button } from "@/components/ui/button";
 import ClearGraphPage from "@/components/pages/ClearGraphPage";
+import ViewIPGraph from "@/components/pages/ViewIPGraph";
 
 export default function Page() {
   return (
@@ -26,11 +27,7 @@ export default function Page() {
         </div>
 
         <div className="mt-4 flex gap-4 py-4">
-          <Button className={"w-1/2 shadow-2xl"} asChild>
-            <Link href={`/graph?timestamp=${new Date().getTime()}`}>
-              View IP Graph
-            </Link>
-          </Button>
+          <ViewIPGraph />
           <Button className={"w-1/2 shadow-2xl"} asChild>
             <Link href="/chapters">
               <span>Continue</span>
