@@ -6,7 +6,7 @@
     }
   ],
   "functions": {
-    "/api/og/*": {
+    "og/graph/*": {
       "memory": 3008,
       "maxDuration": 60
     }
