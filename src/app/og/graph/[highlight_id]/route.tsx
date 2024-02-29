@@ -50,7 +50,7 @@ export async function GET(
   });
   const chart = init(canvas as unknown as HTMLElement);
   const chartData = generateChartData(
-    response.chapters.slice(0, 500).concat(response.chapters.slice(-500)),
+    response.chapters.slice(0, 250).concat(response.chapters.slice(-250)),
   );
   const chartOptions = generateChartOption({
     chartData,
