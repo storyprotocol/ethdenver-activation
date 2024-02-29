@@ -22,7 +22,7 @@ export default function GraphDesktopRender(props: GraphDesktopRenderProps) {
   return (
     <main className="flex w-full flex-1 content-between pb-4">
       <div className="flex grow flex-col pl-4	pt-8">
-        <div className="text-5xl font-medium text-white">
+        <div className="font-medium text-white">
           <OnchainChronicles />
         </div>
         <GraphChart

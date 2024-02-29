@@ -129,6 +129,7 @@ export const generateChartOption = ({
         data: chartData.nodes.map(function (node: any) {
           node.itemStyle = {
             cursor: "pointer",
+            borderColor: "rgba(255,255,255,0.5)",
           };
           node.tooltip = {
             show: true,

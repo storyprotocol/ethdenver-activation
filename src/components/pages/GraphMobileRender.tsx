@@ -22,7 +22,7 @@ export default function GraphMobileRender(props: GraphMobileRenderProps) {
   return (
     <>
       <main className="flex w-full flex-1 flex-col justify-center px-4 pb-4 pt-8">
-        <div className="flex w-full max-w-screen-sm shrink text-5xl font-medium text-white">
+        <div className="flex w-full max-w-screen-sm shrink font-medium text-white">
           <OnchainChronicles />
         </div>
         <GraphChart
