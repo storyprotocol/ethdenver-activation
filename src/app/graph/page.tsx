@@ -10,7 +10,7 @@ export async function generateMetadata({
   return {
     metadataBase: metadataBase ? new URL(metadataBase) : null,
     openGraph: {
-      images: `${metadataBase}/og1/graph/${highlightId || "default"}?timestamp=${new Date().getTime()}`,
+      images: `${metadataBase}/og/graph/${highlightId || "default"}?timestamp=${new Date().getTime()}`,
     },
   };
 }
