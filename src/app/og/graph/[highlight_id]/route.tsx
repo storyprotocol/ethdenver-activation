@@ -7,6 +7,8 @@ import { createCanvas, registerFont } from "canvas";
 import path from "path";
 
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
+export const maxDuration = 60;
 
 export async function GET(
   request: NextRequest,

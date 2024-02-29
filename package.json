@@ -20,6 +20,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@story-protocol/core-sdk": "^0.1.0-alpha",
+    "@vercel/postgres": "^0.7.2",
     "@vercel/postgres-kysely": "^0.7.2",
     "axios": "^1.6.7",
     "canvas": "^2.11.2",
@@ -30,6 +31,7 @@
     "kysely": "^0.27.2",
     "lucide-react": "^0.321.0",
     "next": "14.1.0",
+    "path": "^0.12.7",
     "react": "^18",
     "react-dom": "^18",
     "react-qr-code": "^2.0.12",
@@ -37,6 +39,7 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "viem": "^2.7.16",
     "web3-validator": "^2.0.4"
   },
   "devDependencies": {
