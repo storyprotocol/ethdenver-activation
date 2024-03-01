@@ -39,7 +39,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       });
     }
 
-    randomChapters = await queryChaptersByRandom(count, latestChapterId);
+    randomChapters = await queryChaptersByRandom(2, latestChapterId);
     if (randomChapters.length == 0) {
       return Response.json({
         chapters: result,

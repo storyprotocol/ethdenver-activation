@@ -15,7 +15,7 @@ export async function queryChaptersByRandom(
   excludeId: number,
 ): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter where id <> ${excludeId} ORDER BY RANDOM() LIMIT ${num}`;
+    await sql`SELECT * FROM chapter WHERE id <> ${excludeId} AND parent_id != 489 AND story_id != 1 ORDER BY RANDOM() LIMIT ${num}`;
 
   return rows.map((row) => toChapterMO(row));
 }
@@ -24,13 +24,14 @@ export async function queryLatestChaptersByRandom(
   num: number,
 ): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter where has_child=false ORDER BY RANDOM() LIMIT 1`;
+    await sql`SELECT * FROM chapter WHERE has_child=false AND parent_id != 489 AND story_id != 1 ORDER BY RANDOM() LIMIT 1`;
 
   return rows.map((row) => toChapterMO(row));
 }
 
 export async function queryChapterById(chapterId: number): Promise<ChapterMO> {
-  const { rows } = await sql`SELECT * FROM chapter WHERE id = ${chapterId}`;
+  const { rows } =
+    await sql`SELECT * FROM chapter WHERE id = ${chapterId} AND parent_id != 489 AND story_id != 1`;
   if (rows.length === 0) {
     throw new CusEntityNotFoundError(
       ErrorCode.ChapterNotExistError,
@@ -51,7 +52,7 @@ export async function queryChapterByIds(
   parentIds: number[],
 ): Promise<ChapterMO[]> {
   const text =
-    "SELECT * FROM chapter WHERE id = ANY($1::int[]) order by id asc";
+    "SELECT * FROM chapter WHERE id = ANY($1::int[]) AND parent_id != 489 AND story_id != 1 order by id asc";
   const values = [parentIds];
   const res = await sql.query(text, values);
   return res.rows.map((row) => toChapterMO(row));
@@ -62,7 +63,7 @@ export async function queryChapterSiblingNodes(
   level: number,
 ): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} and level = ${level}`;
+    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} AND level = ${level} AND parent_id != 489 AND story_id != 1`;
   return rows.map((row) => toChapterMO(row));
 }
 
@@ -70,7 +71,7 @@ export async function queryChapterChildNodes(
   chapterId: number,
 ): Promise<ChapterMO[]> {
   const { rows } =
-    await sql`SELECT * FROM chapter WHERE parent_id = ${chapterId} order by id asc`;
+    await sql`SELECT * FROM chapter WHERE parent_id = ${chapterId} ORDER by id asc`;
   return rows.map((row) => toChapterMO(row));
 }
 
@@ -79,7 +80,7 @@ export async function queryChapterByIdAndSid(
   Id: number,
 ): Promise<ChapterMO> {
   const { rows } =
-    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} and id = ${Id}`;
+    await sql`SELECT * FROM chapter WHERE story_id = ${storyId} AND id = ${Id}`;
   if (rows.length === 0) {
     throw new CusEntityNotFoundError(
       ErrorCode.ChapterNotExistError,
@@ -112,7 +113,7 @@ export async function queryRelationship(
 ): Promise<RelationshipMO[]> {
   const client = await db.connect();
   const { rows } =
-    await client.sql`select id, relationship_type, (select asset_seq_id from ip_asset where src_asset_id = credential) as src_asset, (select asset_seq_id from ip_asset where dst_asset_id = credential) as dst_asset from relationship where status = 0  and relationship_type = ${relationshipType} order by id asc limit ${num}`;
+    await client.sql`select id, relationship_type, (select asset_seq_id from ip_asset WHERE src_asset_id = credential) as src_asset, (select asset_seq_id from ip_asset WHERE dst_asset_id = credential) as dst_asset from relationship WHERE status = 0  and relationship_type = ${relationshipType} order by id asc limit ${num}`;
   return rows.map((row) => toRelationshipMO(row));
 }
 
@@ -140,7 +141,7 @@ export async function createChapter(chapter: ChapterMO): Promise<number> {
     const res = await sql.query(text, values);
 
     // update parent has_child field to true
-    await sql`update chapter set has_child = 'true' where id = ${chapter.parent_id}`;
+    await sql`UPDATE chapter SET has_child = 'true' WHERE id = ${chapter.parent_id}`;
 
     return res.rows[0].id;
   } catch (err) {
