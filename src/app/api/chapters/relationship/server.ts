@@ -21,7 +21,7 @@ export async function queryChaptersAfterID({
     FROM 
       chapter 
     WHERE
-      id > ${from_chapter_id || 0}
+      id > ${from_chapter_id || 0} AND parent_id != 489 AND story_id != 1
     ORDER BY
       id
     LIMIT ${limit || defaultLimit}`;
