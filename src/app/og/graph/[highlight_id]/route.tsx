@@ -7,6 +7,7 @@ import { createCanvas, registerFont } from "canvas";
 import path from "path";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export async function GET(
   request: NextRequest,
@@ -48,7 +49,9 @@ export async function GET(
     family: "Roboto",
   });
   const chart = init(canvas as unknown as HTMLElement);
-  const chartData = generateChartData(response.chapters);
+  const chartData = generateChartData(
+    response.chapters.slice(0, 250).concat(response.chapters.slice(-250)),
+  );
   const chartOptions = generateChartOption({
     chartData,
     highlightId,
