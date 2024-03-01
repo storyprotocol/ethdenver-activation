@@ -2,6 +2,32 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Follow below procedures to install all necessary dependencies
+
+```bash
+	brew install pkg-config cairo pango libpng jpeg giflib librsvg
+```
+
+- install nvm:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# or
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+
+- switch to node V20
+
+```bash
+nvm use 20
+```
+
+- install node dependencies
+
+```bash
+npm i
+```
+
 First, run the development server:
 
 ```bash
