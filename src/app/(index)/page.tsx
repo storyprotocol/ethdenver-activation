@@ -31,7 +31,7 @@ export default function Page() {
         <ViewIPGraph />
         <Button className={"w-1/2 shadow-2xl"} asChild>
           <a href="https://twitter.com/StoryProtocol" target="blank">
-            <span>Continue</span>
+            <span>Visit Twitter</span>
             <Image src={arrowRightBlackIcon} alt={"back"} className="ml-2" />
           </a>
         </Button>
