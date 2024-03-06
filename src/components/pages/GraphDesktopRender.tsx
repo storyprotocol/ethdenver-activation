@@ -1,4 +1,3 @@
-import GraphChapters from "@/app/graph/GraphChapters";
 import GraphChart from "./GraphChart";
 import OnchainChronicles from "./OnchainChronicles";
 import ShareStory from "./ShareStory";
@@ -32,7 +31,6 @@ export default function GraphDesktopRender(props: GraphDesktopRenderProps) {
         />
       </div>
       <div className="flex w-full min-w-[480px] max-w-screen-sm flex-1 flex-col pr-16	pt-56">
-        <GraphChapters chapterId={highlightId} className="mb-4" />
         <ShareStory />
         <Button asChild className="shadow-2xl">
           <Link href="/chapters">
