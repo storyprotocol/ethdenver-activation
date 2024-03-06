@@ -24,31 +24,26 @@ export default function GraphChart(props: GraphChartProps) {
   const { className, highlightId, isTv, disablePolling } = props;
   const [allData, setAllData] = useState<ChapterRelationship[]>([]);
   const lastId = useRef(0);
-  const intervalId = useRef<NodeJS.Timeout>();
   const [isLoading, setIsLoading] = useState(true);
   const domRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsType>();
   const isSmallDevice = useMediaQuery("(max-width : 768px)");
   const isMediumDevice = useMediaQuery("(min-width : 769px)");
+  const dataLimit = 10000;
+  const displayDataLimit = 1000;
 
   const getData = useCallback(
     async (abortCtrl: AbortController) => {
       try {
         const response = await axios.get<ChapterRelationshipResponse>(
-          `/api/chapters/relationship?from_chapter_id=${lastId.current}&limit=10000`,
+          `/api/chapters/relationship?from_chapter_id=${lastId.current}&limit=${dataLimit}`,
           {
             signal: abortCtrl.signal,
           },
         );
         const data = response.data;
         if (data.chapters && data.chapters.length) {
-          const dataLastId = data.chapters[data.chapters.length - 1].id;
-          if (lastId.current !== dataLastId) {
-            setAllData((d) => d.concat(data.chapters));
-          }
-        }
-        if (disablePolling && !data.chapters.length) {
-          clearInterval(intervalId.current);
+          setAllData(() => data.chapters.slice(0, displayDataLimit));
         }
         setIsLoading(false);
       } catch (e) {
@@ -66,11 +61,7 @@ export default function GraphChart(props: GraphChartProps) {
     const abortControl = new AbortController();
     setIsLoading(true);
     getData(abortControl);
-    intervalId.current = setInterval(() => {
-      getData(abortControl);
-    }, 5000);
     return () => {
-      clearInterval(intervalId.current);
       abortControl.abort();
     };
   }, [getData]);
@@ -78,14 +69,6 @@ export default function GraphChart(props: GraphChartProps) {
   useEffect(() => {
     if (domRef && domRef.current) {
       chartRef.current = init(domRef.current);
-      chartRef.current.on("click", (e) => {
-        const id = (e.data as unknown as { id: string }).id;
-        if (id) {
-          router.push(
-            `/graph?highlight_id=${id}&timestamp=${new Date().getTime()}`,
-          );
-        }
-      });
     }
     return () => {
       chartRef.current?.dispose();
