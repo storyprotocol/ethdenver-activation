@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import arrowRightBlackIcon from "@/assets/common/arrow_right_black.svg";
 import { Button } from "@/components/ui/button";
@@ -29,10 +28,10 @@ export default function Page() {
         <div className="mt-4 flex gap-4 py-4">
           <ViewIPGraph />
           <Button className={"w-1/2 shadow-2xl"} asChild>
-            <Link href="/chapters">
+            <a href="https://twitter.com/StoryProtocol" target="blank">
               <span>Continue</span>
               <Image src={arrowRightBlackIcon} alt={"back"} className="ml-2" />
-            </Link>
+            </a>
           </Button>
         </div>
       </div>
