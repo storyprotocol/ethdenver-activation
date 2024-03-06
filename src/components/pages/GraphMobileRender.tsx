@@ -1,13 +1,6 @@
-import GraphChapters from "@/app/graph/GraphChapters";
 import GraphChart from "./GraphChart";
 import OnchainChronicles from "./OnchainChronicles";
-import ShareStory from "./ShareStory";
-import { Button } from "../ui/button";
-import Link from "next/link";
 import Image from "next/image";
-import arrowRightBlackPic from "@/assets/common/arrow_right_black.svg";
-import shareIconPic from "@/assets/common/share_icon.svg";
-import { envConfig } from "@/lib/envConfig";
 import footerLogoPic from "@/assets/common/foot_logo.svg";
 
 interface GraphMobileRenderProps {
