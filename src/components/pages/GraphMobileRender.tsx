@@ -30,46 +30,6 @@ export default function GraphMobileRender(props: GraphMobileRenderProps) {
           highlightId={highlightId}
           disablePolling={Boolean(highlightId)}
         />
-        <div className="flex w-full max-w-screen-sm shrink flex-col self-center">
-          {highlightId ? (
-            <GraphChapters chapterId={highlightId} className="mb-4" />
-          ) : null}
-          {highlightId ? <ShareStory /> : null}
-          <Button asChild className="grow shadow-2xl">
-            <Link href="/chapters">
-              {highlightId ? (
-                <>Continue Another Story</>
-              ) : (
-                <>
-                  Continue a Story{" "}
-                  <Image
-                    className="ml-2.5"
-                    src={arrowRightBlackPic}
-                    alt={"Button Icon"}
-                  />
-                </>
-              )}
-            </Link>
-          </Button>
-          {highlightId ? (
-            <Button asChild className="mb-12 mt-4 grow">
-              <a
-                className="flex"
-                target="_blank"
-                href={envConfig.LEARN_STORY_PROTOCOL_LINK || ""}
-              >
-                Learn About Story Protocol{" "}
-                <Image
-                  className="ml-2.5"
-                  src={shareIconPic}
-                  alt={"Blank Icon"}
-                />
-              </a>
-            </Button>
-          ) : (
-            <></>
-          )}
-        </div>
       </main>
       <div className={"cursor-pointer py-4"} onClick={toStoryprotocol}>
         <Image className={"mx-auto"} src={footerLogoPic} alt={"logo"} />
