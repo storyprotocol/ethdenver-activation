@@ -6,33 +6,24 @@ import ViewIPGraph from "@/components/pages/ViewIPGraph";
 
 export default function Page() {
   return (
-    <main
-      className={
-        "flex w-full max-w-screen-sm flex-1 flex-col justify-center p-4"
-      }
-    >
+    <main className="flex w-full max-w-screen-sm flex-1 flex-col justify-center p-4">
       <h1 className="mb-4 text-5xl font-medium">Onchain Chronicles</h1>
       <p className="mb-4 text-xl">A collective storytelling journey.</p>
       <p className="mb-4 text-xl">
         Thank you for everyone who participated and contributed to Onchain
-        Chronicles during ETH Denver 2024. We would be airdropping a
-        commemorative NFT to all participants. Stay tuned to our socials for
-        more information.
+        Chronicles during ETH Denver 2024. Stay tuned to our socials for more
+        information on the commemorative Story Protocol NFT.
       </p>
-      <p className="mb-4 text-xl">
+      <p className="text-xl">
         With Onchain Chronicles, you continue the story and shape how the story
         is told paragraph by paragraph.
       </p>
-      <p className="text-xl">
-        Once you tell your story, you can mint a commemorative Story Protocol
-        NFT.
-      </p>
       <div className="mt-4 flex gap-4 py-4">
         <ViewIPGraph />
-        <Button className={"w-1/2 shadow-2xl"} asChild>
+        <Button className="w-1/2 shadow-2xl" asChild>
           <a href="https://twitter.com/StoryProtocol" target="blank">
             <span>Visit Twitter</span>
-            <Image src={arrowRightBlackIcon} alt={"back"} className="ml-2" />
+            <Image src={arrowRightBlackIcon} alt="back" className="ml-2" />
           </a>
         </Button>
       </div>
