@@ -35,7 +35,7 @@ export default function GraphChart(props: GraphChartProps) {
     async (abortCtrl: AbortController) => {
       try {
         const response = await axios.get<ChapterRelationshipResponse>(
-          `/api/chapters/relationship?from_chapter_id=${lastId.current}&limit=${dataLimit}`,
+          `/api/storeJSONData`,
           {
             signal: abortCtrl.signal,
           },
