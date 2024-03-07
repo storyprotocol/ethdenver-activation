@@ -5,11 +5,8 @@ import { init, EChartsType } from "echarts";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
-import axios from "axios";
-import {
-  ChapterRelationshipResponse,
-  ChapterRelationship,
-} from "@/interface/chapterRelationShipResponse";
+import { mockData } from "@/public/data";
+import { ChapterRelationship } from "@/interface/chapterRelationShipResponse";
 import { generateChartData, generateChartOption } from "@/lib/chartUtils";
 
 interface GraphChartProps {
@@ -30,39 +27,15 @@ export default function GraphChart(props: GraphChartProps) {
   const isSmallDevice = useMediaQuery("(max-width : 768px)");
   const isMediumDevice = useMediaQuery("(min-width : 769px)");
 
-  const getData = useCallback(
-    async (abortCtrl: AbortController) => {
-      try {
-        const response = await axios.get<ChapterRelationshipResponse>(
-          `/api/storeJSONData`,
-          {
-            signal: abortCtrl.signal,
-          },
-        );
-        const data = response.data;
-        if (data.chapters && data.chapters.length) {
-          setAllData(() => data.chapters);
-        }
-        setIsLoading(false);
-      } catch (e) {
-        if (abortCtrl.signal.aborted) {
-          return;
-        }
-        console.log(e);
-        setIsLoading(false);
-      }
-    },
-    [disablePolling],
-  );
+  const getData = useCallback(() => {
+    setAllData(mockData);
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
-    const abortControl = new AbortController();
     setIsLoading(true);
-    getData(abortControl);
-    return () => {
-      abortControl.abort();
-    };
-  }, [getData]);
+    getData();
+  }, []);
 
   useEffect(() => {
     if (domRef && domRef.current) {
@@ -91,14 +64,14 @@ export default function GraphChart(props: GraphChartProps) {
     }
   }, [allData, chartRef, highlightId, isMediumDevice, isSmallDevice, isTv]);
 
+  function resize() {
+    chartRef.current?.resize();
+  }
+
   useEffect(() => {
-    window.addEventListener("resize", function () {
-      chartRef.current?.resize();
-    });
+    window.addEventListener("resize", resize);
     return () => {
-      window.removeEventListener("resize", function () {
-        chartRef.current?.resize();
-      });
+      window.removeEventListener("resize", resize);
     };
   }, []);
 
