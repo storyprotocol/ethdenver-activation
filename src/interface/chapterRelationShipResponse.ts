@@ -1,7 +1,7 @@
 export interface ChapterRelationship {
-  id: number;
-  story_id: number;
-  parent_id: number;
+  id: string;
+  story_id: string;
+  parent_id: string;
   wallet_address: string;
   content: string;
 }

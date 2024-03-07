@@ -1,5 +1,16 @@
-import { ChapterMO } from "@/app/api/model";
-import exp from "constants";
+export interface ChapterMO {
+  id: number;
+  story_id: number;
+  content: string;
+  wallet_address: string;
+  level: number;
+  path: number[];
+  is_anonymous: boolean;
+  has_child: boolean;
+  parent_id: number;
+  credential: string;
+  created_at: number;
+}
 
 export interface Chapter {
   id: number;
