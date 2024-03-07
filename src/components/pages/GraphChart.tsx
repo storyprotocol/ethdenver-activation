@@ -29,7 +29,6 @@ export default function GraphChart(props: GraphChartProps) {
   const chartRef = useRef<EChartsType>();
   const isSmallDevice = useMediaQuery("(max-width : 768px)");
   const isMediumDevice = useMediaQuery("(min-width : 769px)");
-  const dataLimit = 1000;
 
   const getData = useCallback(
     async (abortCtrl: AbortController) => {
